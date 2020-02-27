@@ -1,0 +1,6 @@
+<img src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/boards/chess24/white.png"
+    style="height: 460px; width: 460;">
+<div *ngFor="let casilla of casillas; let i = index" style="height: 53px; width: 53px;position: absolute;"
+[style.top]="casilla.posicionY+'px'" [style.left]="casilla.posicionX+'px'">
+    <img *ngIf="casilla.pieza!==undefined" src="{{casilla.pieza.imagen}}" style="position: relative;height: 53px; width: 53px" >
+</div>
