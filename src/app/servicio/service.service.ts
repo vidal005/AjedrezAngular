@@ -158,6 +158,12 @@ export class ServiceService {
         pos[0] = pos[0] - 1;
         pos[1] = pos[1] - 1;
         posiblesPosiciones.push(this.getPosicion(pos));
+
+        //si encontramos una pieza
+        let piezaEncontrada = this.casillas[this.getPosicion([pos[0]-1,pos[1]-1])].pieza;
+        if(piezaEncontrada!= null && piezaEncontrada.color != casilla.pieza.color){
+        posiblesPosiciones.push(this.getPosicion(pos));
+        }
       }
 
       pos = this.getXY(casilla.posicion);
@@ -167,6 +173,12 @@ export class ServiceService {
         pos[0] = pos[0] + 1;
         pos[1] = pos[1] - 1;
         posiblesPosiciones.push(this.getPosicion(pos));
+        
+        //si enocontramos una pieza
+        let piezaEncontrada = this.casillas[this.getPosicion([pos[0]-1,pos[1]-1])].pieza;
+        if(piezaEncontrada!= null && piezaEncontrada.color != casilla.pieza.color){
+        posiblesPosiciones.push(this.getPosicion(pos));
+        }
       }
 
       pos = this.getXY(casilla.posicion);
@@ -176,6 +188,12 @@ export class ServiceService {
         pos[0] = pos[0] - 1;
         pos[1] = pos[1] + 1;
         posiblesPosiciones.push(this.getPosicion(pos));
+        
+        //si encontramos una pieza
+        let piezaEncontrada = this.casillas[this.getPosicion([pos[0]-1,pos[1]-1])].pieza;
+        if(piezaEncontrada!= null && piezaEncontrada.color != casilla.pieza.color){
+        posiblesPosiciones.push(this.getPosicion(pos));
+        }
       }
 
       pos = this.getXY(casilla.posicion);
@@ -185,52 +203,15 @@ export class ServiceService {
         pos[0] = pos[0] + 1;
         pos[1] = pos[1] + 1;
         posiblesPosiciones.push(this.getPosicion(pos));
+
+        //si encontramos una pieza
+        let piezaEncontrada = this.casillas[this.getPosicion([pos[0]-1,pos[1]-1])].pieza;
+        if(piezaEncontrada!= null && piezaEncontrada.color != casilla.pieza.color){
+        posiblesPosiciones.push(this.getPosicion(pos));
+        }
       }
-      /*
-      let index = 0;
-      do {
-        
-        pos[0] = pos[0] + 1;
-        pos[1] = pos[1] + 1;
-        posiblesPosiciones.push(this.getPosicion(pos));
-        index ++;
-        
-      } while (index < 7 && pos[0]>0&&pos[0]<=7&&pos[1]>0&&pos[1]<=7&&
-        this.casillas[this.getPosicion([pos[0]+1,pos[1]+1])].pieza == null);
-
-        let index2 = 0;
-      do {
-        
-        pos[0] = pos[0] + 1;
-        pos[1] = pos[1] + 1;
-        posiblesPosiciones.push(this.getPosicion(pos));
-        index2 ++;
-        
-      } while (index2 < 7 && pos[0]>0&&pos[0]<=7&&pos[1]>0&&pos[1]<=7&&
-        this.casillas[this.getPosicion([pos[0]+1,pos[1]+1])].pieza == null);
-
-        let index3 = 0;
-      do {
-        
-        pos[0] = pos[0] + 1;
-        pos[1] = pos[1] + 1;
-        posiblesPosiciones.push(this.getPosicion(pos));
-        index3 ++;
-        
-      } while (index3 < 7 && pos[0]>0&&pos[0]<=7&&pos[1]>0&&pos[1]<=7&&
-        this.casillas[this.getPosicion([pos[0]+1,pos[1]+1])].pieza == null);
-
-        let index4 = 0;
-      do {
-        
-        pos[0] = pos[0] + 1;
-        pos[1] = pos[1] + 1;
-        posiblesPosiciones.push(this.getPosicion(pos));
-        index4 ++;
-        
-      } while (index4 < 7 && pos[0]>0&&pos[0]<=7&&pos[1]>0&&pos[1]<=7&&
-        this.casillas[this.getPosicion([pos[0]+1,pos[1]+1])].pieza == null);
-*/
+      
+      
     }
     return posiblesPosiciones;
   }
