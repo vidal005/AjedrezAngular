@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "Chess": {
@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "Chess"
+    }
+  },
+  "defaultProject": "Chess",
+  "cli": {
+    "analytics": "1da54dea-dbd2-47b6-9e6a-10db128937d9"
+  }
 }
