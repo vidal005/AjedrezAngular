@@ -1,7 +1,7 @@
 export class Pieza {
-    private color : string;
-    private id : string;
-    private imagen : string;
+    public color : string;
+    public id : string;
+    public imagen : string;
 
     constructor(color?,id?,imagen?){
         this.color = color;
