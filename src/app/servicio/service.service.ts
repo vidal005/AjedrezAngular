@@ -153,7 +153,7 @@ export class ServiceService {
     if (casilla.pieza.id == "b") {
 
       var pos = this.getXY(casilla.posicion);
-      console.log(posiblesPosiciones);
+
       //diagonal noroeste
       for (let index = 0; index < 7 && pos[0] > 0 && pos[0] <= 7 && pos[1] > 0 && pos[1] <= 7 &&
         this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])].pieza == null; index++) {
@@ -172,7 +172,7 @@ export class ServiceService {
       //diagonal suroeste
       pos = this.getXY(casilla.posicion);
 
-      for (let index = 0; index < 7 && pos[0] > 0 && pos[0] <= 7 && pos[1] > 0 && pos[1] <= 7 &&
+      for (let index = 0; index < 7 && pos[0] > 0 && pos[0] < 7 && pos[1] >= 0 && pos[1] <= 7 &&
         this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])].pieza == null; index++) {
         pos[0] = pos[0] + 1;
         pos[1] = pos[1] - 1;
@@ -206,7 +206,7 @@ export class ServiceService {
       //diagonal sureste
       pos = this.getXY(casilla.posicion);
 
-      for (let index = 0; index < 7 && pos[0] > 0 && pos[0] <= 7 && pos[1] > 0 && pos[1] <= 7 &&
+      for (let index = 0; index < 7 && pos[0] >= 0 && pos[0] < 7 && pos[1] >= 0 && pos[1] < 7 &&
         this.casillas[this.getPosicion([pos[0] + 1, pos[1] + 1])].pieza == null; index++) {
         pos[0] = pos[0] + 1;
         pos[1] = pos[1] + 1;
