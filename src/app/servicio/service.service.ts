@@ -92,65 +92,81 @@ export class ServiceService {
     //peon
     if (casilla.pieza.id == "p") {
       if (casilla.pieza.color == "white") {
-        var posicionesAEvaluar = [
-          [-1, -1],
-          [-1, 0],
-          [-1, 1]
-        ]
-      }
-      else {
-        var posicionesAEvaluar = [
-          [1, -1],
-          [1, 0],
-          [1, 1]
-        ]
-      }
-      for (let index = 0; index < posicionesAEvaluar.length; index++) {
-        //obtener la posicion absoluta a evaluar
-        let posxy = this.getXY(casilla.posicion);
-        posxy[0] = posxy[0] + posicionesAEvaluar[index][0];
-        posxy[1] = posxy[1] + posicionesAEvaluar[index][1];
-        let pos = this.getPosicion(posxy);
-
-        //Comprobar que está dentro del tablero
-        if (posxy[0] >= 0 && posxy[0] <= 7 && posxy[1] >= 0 && posxy[1] <= 7) {
-          //si el moviento no es vertical
-          if (posicionesAEvaluar[index][1] == 0) {
-            if (this.casillas[pos].pieza == undefined) {
-              posiblesPosiciones.push(pos);
-
-            }
-          }
-          else if (this.casillas[pos].pieza == undefined) {
-            //si es vertical una casilla
-            if (posicionesAEvaluar[index][0] == 0) {
-              if (this.casillas[casilla.posicion].pieza != undefined) {
-                posiblesPosiciones.push(pos);
-                if (casilla.pieza.color == "white") {
-                  if (this.casillas[casilla.posicion - 16].pieza == undefined &&
-                    this.getXY(this.casillas[casilla.posicion])[0] == 6) {
-                    //posiblesPosiciones.push(casilla.posicion - 16);
-                  }
-                }
-                else {
-                  if (this.casillas[casilla.posicion + 16].pieza == undefined &&
-                    this.getXY(this.casillas[casilla.posicion])[0] == 6) {
-                    // posiblesPosiciones.push(casilla.posicion + 16);
-                  }
-                }
+        //casilla ariba
+        let nuevaPosicion = [this.getXY(casilla.posicion)[0] - 1, this.getXY(casilla.posicion)[1]];
+        //si está dentro del tablero
+        if (nuevaPosicion[0] >= 0) {
+          //si no hay pieza casilla arriba
+          if (this.casillas[this.getPosicion(nuevaPosicion)].pieza == null) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+            //si el peón está en la segunda línea
+            if (this.getXY(casilla.posicion)[0] == 6) {
+              //si no hay pieza dos casillas arriba
+              if (this.casillas[casilla.posicion - 16].pieza == null) {
+                posiblesPosiciones.push(casilla.posicion - 16);
               }
             }
           }
         }
+        //diagonal izquierda
+        nuevaPosicion = [this.getXY(casilla.posicion)[0] - 1, this.getXY(casilla.posicion)[1] - 1];
+        //si está dentro del tablero
+        if (nuevaPosicion[0] >= 0 && nuevaPosicion[1] >= 0) {
+          let piezaEncontrada = this.casillas[this.getPosicion(nuevaPosicion)].pieza;
+          if (piezaEncontrada != null && piezaEncontrada.color != casilla.pieza.color) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+          }
+        }
+        //diagonal derecha
+        nuevaPosicion = [this.getXY(casilla.posicion)[0] - 1, this.getXY(casilla.posicion)[1] + 1];
+        //si está dentro del tablero
+        if (nuevaPosicion[0] >= 0 && nuevaPosicion[1] <= 7) {
+          let piezaEncontrada = this.casillas[this.getPosicion(nuevaPosicion)].pieza;
+          if (piezaEncontrada != null && piezaEncontrada.color != casilla.pieza.color) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+          }
+        }
       }
-
-
-
-
+      else if (casilla.pieza.color == "black") {
+        //casilla abajo
+        let nuevaPosicion = [this.getXY(casilla.posicion)[0] + 1, this.getXY(casilla.posicion)[1]];
+        //si está dentro del tablero
+        if (nuevaPosicion[0] <= 7) {
+          //si no hay pieza casilla abajo
+          if (this.casillas[this.getPosicion(nuevaPosicion)].pieza == null) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+            //si el peón está en la segunda línea
+            if (this.getXY(casilla.posicion)[0] == 1) {
+              //si no hay pieza dos casillas abajo
+              if (this.casillas[casilla.posicion + 16].pieza == null) {
+                posiblesPosiciones.push(casilla.posicion + 16);
+              }
+            }
+          }
+        }
+        //diagonal izquierda
+        nuevaPosicion = [this.getXY(casilla.posicion)[0] + 1, this.getXY(casilla.posicion)[1] - 1];
+        //si está dentro del tablero
+        if (nuevaPosicion[0] <= 7 && nuevaPosicion[1] >= 0) {
+          let piezaEncontrada = this.casillas[this.getPosicion(nuevaPosicion)].pieza;
+          if (piezaEncontrada != null && piezaEncontrada.color != casilla.pieza.color) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+          }
+        }
+        //diagonal derecha
+        nuevaPosicion = [this.getXY(casilla.posicion)[0] + 1, this.getXY(casilla.posicion)[1] + 1];
+        //si está dentro del tablero
+        if (nuevaPosicion[0] <= 7 && nuevaPosicion[1] <= 7) {
+          let piezaEncontrada = this.casillas[this.getPosicion(nuevaPosicion)].pieza;
+          if (piezaEncontrada != null && piezaEncontrada.color != casilla.pieza.color) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+          }
+        }
+      }
     }
     //************************************************************************* */
     //alfil
-    if (casilla.pieza.id == "b") {
+    else if (casilla.pieza.id == "b") {
 
       var pos = this.getXY(casilla.posicion);
       var piezaEncontrada;
@@ -225,7 +241,7 @@ export class ServiceService {
     }
     //**************************************************************************/
     //Torre
-    if (casilla.pieza.id == 'r') {
+    else if (casilla.pieza.id == 'r') {
       var pos = this.getXY(casilla.posicion);
       var piezaEncontrada;
 
@@ -234,24 +250,24 @@ export class ServiceService {
       for (let index = 0; index < 7 && pos[0] > 0 &&
         (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
 
-        posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] ]));
-        console.log("arriba" + this.getPosicion([pos[0] - 1, pos[1] ]));
+        posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1]]));
+        console.log("arriba" + this.getPosicion([pos[0] - 1, pos[1]]));
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
         }
         pos[0] = pos[0] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] ])].pieza;
+        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
       }
 
       //abajo
       pos = this.getXY(casilla.posicion);
-      piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] ])].pieza;
+      piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
       for (let index = 0; index < 7 && pos[0] < 7 &&
         (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
 
-        posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] ]));
-        console.log("abajo" + this.getPosicion([pos[0] + 1, pos[1] ]));
+        posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1]]));
+        console.log("abajo" + this.getPosicion([pos[0] + 1, pos[1]]));
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -262,28 +278,28 @@ export class ServiceService {
 
       //derecha
       pos = this.getXY(casilla.posicion);
-      piezaEncontrada = this.casillas[this.getPosicion([pos[0] , pos[1] + 1])].pieza;
+      piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
 
       for (let index = 0; index < 7 && pos[1] < 7 &&
         (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
-        posiblesPosiciones.push(this.getPosicion([pos[0] , pos[1] + 1]));
-        console.log("derecha" + this.getPosicion([pos[0] , pos[1] + 1]));
+        posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] + 1]));
+        console.log("derecha" + this.getPosicion([pos[0], pos[1] + 1]));
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
         }
         pos[1] = pos[1] + 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] , pos[1] + 1])].pieza;
+        piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
       }
 
       //izquierda
       pos = this.getXY(casilla.posicion);
-      piezaEncontrada = this.casillas[this.getPosicion([pos[0] , pos[1] - 1])].pieza;
+      piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
 
       for (let index = 0; index < 7 && pos[1] > 0 &&
         (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
-        posiblesPosiciones.push(this.getPosicion([pos[0] , pos[1] - 1]));
-        console.log("izquierda" + this.getPosicion([pos[0] , pos[1] - 1]));
+        posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] - 1]));
+        console.log("izquierda" + this.getPosicion([pos[0], pos[1] - 1]));
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -296,79 +312,79 @@ export class ServiceService {
     //************************************************************************* */
     //Reina(alfil+torre)
 
-    if (casilla.pieza.id == "q") {
+    else if (casilla.pieza.id == "q") {
 
       //Torre
 
-      let pos = this.getXY(casilla.pieza.id);
+      var pos = this.getXY(casilla.posicion);
+      var piezaEncontrada;
 
-      for (let index = 0; index < 7 && pos[0] > 0 && pos[0] <= 7 && pos[1] > 0 && pos[1] <= 7 &&
-        this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza == null; index++) {
-        pos[0] = pos[0] + 1;
+      //arriba
+      piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
+      for (let index = 0; index < 7 && pos[0] > 0 &&
+        (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
 
-        posiblesPosiciones.push(this.getPosicion(pos));
-
-        //si encontramos una pieza
-        let piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
-        //si es de otro color añadimos
-        if (piezaEncontrada != null && piezaEncontrada.color != casilla.pieza.color) {
-          posiblesPosiciones.push(this.getPosicion(pos));
+        posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1]]));
+        console.log("arriba" + this.getPosicion([pos[0] - 1, pos[1]]));
+        if (piezaEncontrada != null) {
+          //finalizar loop
+          index = 8;
         }
-
-      }
-
-      pos = this.getXY(casilla.pieza.id);
-      for (let index = 0; index < 7 && pos[0] > 0 && pos[0] <= 7 && pos[1] > 0 && pos[1] <= 7 &&
-        this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza == null; index++) {
         pos[0] = pos[0] - 1;
-
-        posiblesPosiciones.push(this.getPosicion(pos));
-
-        //si encontramos una pieza
-        let piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
-        //si es de otro color añadimos
-        if (piezaEncontrada != null && piezaEncontrada.color != casilla.pieza.color) {
-          posiblesPosiciones.push(this.getPosicion(pos));
-        }
-
+        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
       }
 
-      pos = this.getXY(casilla.pieza.id);
+      //abajo
+      pos = this.getXY(casilla.posicion);
+      piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
+      for (let index = 0; index < 7 && pos[0] < 7 &&
+        (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
 
-      for (let index = 0; index < 7 && pos[0] > 0 && pos[0] <= 7 && pos[1] > 0 && pos[1] <= 7 &&
-        this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza == null; index++) {
+        posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1]]));
+        console.log("abajo" + this.getPosicion([pos[0] + 1, pos[1]]));
+        if (piezaEncontrada != null) {
+          //finalizar loop
+          index = 8;
+        }
+        pos[0] = pos[0] + 1;
+        piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
+      }
+
+      //derecha
+      pos = this.getXY(casilla.posicion);
+      piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
+
+      for (let index = 0; index < 7 && pos[1] < 7 &&
+        (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
+        posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] + 1]));
+        console.log("derecha" + this.getPosicion([pos[0], pos[1] + 1]));
+        if (piezaEncontrada != null) {
+          //finalizar loop
+          index = 8;
+        }
         pos[1] = pos[1] + 1;
-
-        posiblesPosiciones.push(this.getPosicion(pos));
-
-        //si encontramos una pieza
-        let piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
-        //si es de otro color añadimos
-        if (piezaEncontrada != null && piezaEncontrada.color != casilla.pieza.color) {
-          posiblesPosiciones.push(this.getPosicion(pos));
-        }
-
+        piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
       }
 
-      pos = this.getXY(casilla.pieza.id);
+      //izquierda
+      pos = this.getXY(casilla.posicion);
+      piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
 
-      for (let index = 0; index < 7 && pos[0] > 0 && pos[0] <= 7 && pos[1] > 0 && pos[1] <= 7 &&
-        this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza == null; index++) {
+      for (let index = 0; index < 7 && pos[1] > 0 &&
+        (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
+        posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] - 1]));
+        console.log("izquierda" + this.getPosicion([pos[0], pos[1] - 1]));
+        if (piezaEncontrada != null) {
+          //finalizar loop
+          index = 8;
+        }
         pos[1] = pos[1] - 1;
-
-        posiblesPosiciones.push(this.getPosicion(pos));
-
-        //si encontramos una pieza
-        let piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
-        //si es de otro color añadimos
-        if (piezaEncontrada != null && piezaEncontrada.color != casilla.pieza.color) {
-          posiblesPosiciones.push(this.getPosicion(pos));
-        }
-
+        piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
       }
+
 
       //alfil
-      pos = this.getXY(casilla.posicion);
+      var pos = this.getXY(casilla.posicion);
       var piezaEncontrada;
 
       //diagonal noroeste
@@ -397,7 +413,6 @@ export class ServiceService {
         console.log("suroeste" + this.getPosicion([pos[0] + 1, pos[1] - 1]));
         if (piezaEncontrada != null) {
           //finalizar loop
-          console.log(piezaEncontrada);
           index = 8;
         }
         pos[0] = pos[0] + 1;
@@ -442,29 +457,50 @@ export class ServiceService {
     }
     //************************************************************************* */
     //Rey
-    /*if(casilla.pieza.id=="k"){
+    else if (casilla.pieza.id == "k") {
       let pos = this.getXY(casilla.posicion);
-
-      let posibles = [[1,1],[1,-1],[-1,1],[-1,-1]];
+      let posibles = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
       //Comprobar que no hay pieza amiga en el posible sitio
       for (let index = 0; index < posibles.length; index++) {
+        let nuevaPosicion = [];
+        nuevaPosicion[0] = pos[0] + posibles[index][0];
+        nuevaPosicion[1] = pos[1] + posibles[index][1];
 
-        pos[0] = pos[0] + posibles[index][0];
-        pos[1] = pos[1] + posibles[index][1];
-
-        let pieza = this.casillas
-        if (this.casillas[this.getPosicion()]) {
-          
+        //si está dentro del tablero
+        if (nuevaPosicion[0] >= 0 && nuevaPosicion[0] <= 7 &&
+          nuevaPosicion[1] >= 0 && nuevaPosicion[1] <= 7) {
+          if (this.casillas[this.getPosicion(nuevaPosicion)].pieza == null) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+          }
+          else if (this.casillas[this.getPosicion(nuevaPosicion)].pieza.color != casilla.pieza.color) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+          }
         }
-        
       }
     }
-*/
+
 
     //************************************************************************* */
     //Caballo
-    if (casilla.pieza.id == "n") {
+    else if (casilla.pieza.id == "n") {
+      let pos = this.getXY(casilla.posicion);
+      let posibles = [[-2, 1], [-2, -1], [-1, -2], [1, -2], [2, -1], [2, 1], [1, 2], [-1, 2]];
 
+      for (let index = 0; index < posibles.length; index++) {
+        var nuevaPosicion = [];
+        nuevaPosicion[0] = pos[0] + posibles[index][0];
+        nuevaPosicion[1] = pos[1] + posibles[index][1];
+
+        if (nuevaPosicion[0] >= 0 && nuevaPosicion[0] <= 7 &&
+          nuevaPosicion[1] >= 0 && nuevaPosicion[1] <= 7) {
+          if (this.casillas[this.getPosicion(nuevaPosicion)].pieza == null) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+          }
+          else if (this.casillas[this.getPosicion(nuevaPosicion)].pieza.color != casilla.pieza.color) {
+            posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
+          }
+        }
+      }
     }
 
 
