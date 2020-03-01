@@ -83,12 +83,16 @@ export class ServiceService {
     }
   }
 
+  getCasillas(){
+    return this.casillas;
+  }
+
   getPosiblesPosiciones(numero: number) {
     let casilla = this.casillas[numero];
 
     let posiblesPosiciones = [];
 
-    //************************************************************************* */
+    //**************************************************************************/
     //peon
     if (casilla.pieza.id == "p") {
       if (casilla.pieza.color == "white") {
@@ -267,7 +271,7 @@ export class ServiceService {
       var pos = this.getXY(casilla.posicion);
       var piezaEncontrada;
 
-      //arriba
+      ////arriba
       if(this.casillas[this.getPosicion([pos[0] - 1, pos[1]])] != null){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
       }
@@ -288,13 +292,14 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
       }
 
-      //abajo
+      ////abajo
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0] + 1, pos[1]])] != null){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
       }
+      else{
       piezaEncontrada = null;
-
+      }
       for (let index = 0; index < 7 && pos[0] < 7 &&
         (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
 
@@ -308,7 +313,7 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
       }
 
-      //derecha
+      ////derecha
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0], pos[1] + 1])]){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
@@ -330,7 +335,7 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
       }
 
-      //izquierda
+      ////izquierda
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0], pos[1] - 1])]){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
@@ -362,7 +367,7 @@ export class ServiceService {
       var pos = this.getXY(casilla.posicion);
       var piezaEncontrada;
 
-      //arriba
+      ////arriba
       if(this.casillas[this.getPosicion([pos[0] - 1, pos[1]])] != null){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
       }
@@ -383,13 +388,15 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
       }
 
-      //abajo
+      ////abajo
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0] + 1, pos[1]])] != null){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
       }
-      piezaEncontrada = null;
-
+      else{
+        piezaEncontrada = null;
+      }
+      
       for (let index = 0; index < 7 && pos[0] < 7 &&
         (piezaEncontrada == null || piezaEncontrada.color != casilla.pieza.color); index++) {
 
@@ -403,7 +410,7 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
       }
 
-      //derecha
+      ////derecha
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0], pos[1] + 1])]){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
@@ -425,7 +432,7 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
       }
 
-      //izquierda
+      ////izquierda
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0], pos[1] - 1])]){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
@@ -451,7 +458,7 @@ export class ServiceService {
       var pos = this.getXY(casilla.posicion);
       var piezaEncontrada;
 
-      //diagonal noroeste
+      ////diagonal noroeste
       if(this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])] != null){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])].pieza;
       }
@@ -472,7 +479,7 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])].pieza;
       }
 
-      //diagonal suroeste
+      ////diagonal suroeste
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])] !=null){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])].pieza;
@@ -495,7 +502,7 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])].pieza;
       }
 
-      //diagonal noreste
+      ////diagonal noreste
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])] != null){
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])].pieza;
@@ -517,7 +524,7 @@ export class ServiceService {
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])].pieza;
       }
 
-      //diagonal sureste
+      ////diagonal sureste
 
       pos = this.getXY(casilla.posicion);
       if(this.casillas[this.getPosicion([pos[0] + 1, pos[1] + 1])] != null){
@@ -565,7 +572,6 @@ export class ServiceService {
       }
     }
 
-
     //************************************************************************* */
     //Caballo
     else if (casilla.pieza.id == "n") {
@@ -588,7 +594,6 @@ export class ServiceService {
         }
       }
     }
-
 
     return posiblesPosiciones;
   }
