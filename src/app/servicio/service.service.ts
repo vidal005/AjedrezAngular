@@ -90,7 +90,7 @@ export class ServiceService {
   getPosiblesPosiciones(numero: number) {
     let casilla = this.casillas[numero];
 
-    let posiblesPosiciones = [];
+    let posiblesPosiciones : number[] = [];
 
     //**************************************************************************/
     //peon
