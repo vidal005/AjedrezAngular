@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Casilla } from 'src/app/modelo/casilla';
 import { Pieza } from 'src/app/modelo/pieza';
 import { ServiceService } from 'src/app/servicio/service.service';
@@ -10,6 +10,7 @@ import { ServiceService } from 'src/app/servicio/service.service';
 })
 export class TableroComponent implements OnInit {
 
+  @Input() casilla:Casilla;
   public casillas: Casilla[];
   constructor(private service: ServiceService) {
     this.casillas = service.getCasillas();
