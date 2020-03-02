@@ -1,8 +1,12 @@
 <img src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/boards/chess24/white.png"
     style="height: 460px; width: 460;">
-<div  *ngFor="let casilla of casillas; let i = index" style="height: 53px; width: 53px;position: absolute;"
-[style.top]="casilla.posicionY+'px'" [style.left]="casilla.posicionX+'px'" (click)="onClickMe(casilla.posicion)" class="_{{casilla.posicion}} casilla">
+<div *ngFor="let casilla of casillas; let i = index" style="height: 53px; width: 53px;position: absolute;"
+    (drop)="drop($event)" (dragover)="allowDrop($event)" [style.top]="casilla.posicionY+'px'" id="{{casilla.posicion}}"
+    [style.left]="casilla.posicionX+'px'" (click)="onClickMe(casilla.posicion)" class="_{{casilla.posicion}} casilla">
     <span style="position: absolute;top: auto;left: auto;">{{casilla.posicion}}</span>
-    <img class="resaltar" src="https://assets.chess24.com/assets/804b8435ad5a94accc3de0729b3af3c1/images/chess/themes/pieces/chess24/highlight/null.png" style="position: absolute;height: 53px; width: 53px" >
-    <img *ngIf="casilla.pieza!==undefined" src="{{casilla.pieza.imagen}}" style="position: absolute;height: 53px; width: 53px" class="pieza">
+    <img class="resaltar"
+        src="https://assets.chess24.com/assets/804b8435ad5a94accc3de0729b3af3c1/images/chess/themes/pieces/chess24/highlight/null.png"
+        style="position: absolute;height: 53px; width: 53px">
+    <img *ngIf="casilla.pieza!==undefined" src="{{casilla.pieza.imagen}}" id="{{casilla.pieza.id}}"
+        style="position: absolute;height: 53px; width: 53px" class="pieza" (draggable)="true" (dragstart)="drag($event, casilla.posicion)">
 </div>

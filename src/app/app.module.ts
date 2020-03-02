@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { TableroComponent } from './componentes/tablero/tablero.component';
 import { PiezaComponent } from './componentes/pieza/pieza.component';
 
+import { DragDropModule} from '@angular/cdk/drag-drop';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,6 +17,7 @@ import { PiezaComponent } from './componentes/pieza/pieza.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    DragDropModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
