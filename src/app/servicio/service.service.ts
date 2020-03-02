@@ -310,6 +310,7 @@ export class ServiceService {
           index = 8;
         }
         pos[0] = pos[0] + 1;
+        console.log(this.casillas[this.getPosicion([pos[0] + 1, pos[1]])]);
         piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
       }
 

@@ -61,7 +61,8 @@ export class CasillaComponent implements OnInit {
     let movimientos: number[];
     movimientos = this.servicio.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
     console.log(ev.target.parentElement);
-    let casilla = movimientos.find(element => element = ev.target.parentElement.id);
+    let casilla = movimientos.find(element => element == ev.target.parentElement.id);
+    console.log(casilla);
     if(casilla){
       this.servicio.casillas[casilla].pieza = this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza;
       this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza = null;
