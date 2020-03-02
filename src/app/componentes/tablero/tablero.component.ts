@@ -65,26 +65,31 @@ export class TableroComponent implements OnInit {
   }
 
   drag(ev, pos: number) {
-    
     this.onClickMe(pos);
-    ev.dataTransfer.setData("pieza", ev.target.id);
     ev.dataTransfer.setData("posicion", pos);
     ev.dataTransfer.setData("imgPieza", ev.target.id);
     console.log("drag"+ev.target.id);
   }
   drop(ev) {
-    let movs = this.service.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
-    if(movs.includes(ev.target.parentElement.id)){
-      ev.preventDefault();
+    //quitar seleccionados y sugeridos de otras casillas
+    var seleccionados = document.getElementsByClassName("seleccionado");
+    console.log(seleccionados);
+    for (let index = 0; index < seleccionados.length; index++) {
+      seleccionados[index].getElementsByTagName("img")[0].src = "https://assets.chess24.com/assets/804b8435ad5a94accc3de0729b3af3c1/images/chess/themes/pieces/chess24/highlight/null.png";
+      seleccionados[index].classList.remove("seleccionado");
     }
-   
+    var sugeridas = document.getElementsByClassName("sugerida");
+    for (let index = 0; index < sugeridas.length; index++) {
+      sugeridas[index].getElementsByTagName("img")[0].src = "https://assets.chess24.com/assets/804b8435ad5a94accc3de0729b3af3c1/images/chess/themes/pieces/chess24/highlight/null.png";
+      sugeridas[index].classList.remove("sugerida");
+    }
+    ev.preventDefault();
     var data = ev.dataTransfer.getData("imgPieza");
     ev.target.parentElement.appendChild(document.getElementById(data));
-    console.log("drop "+data);
-    console.log(ev.target);
-    console.log(document.getElementById(data));
   }
   allowDrop(ev) {
+    if(ev.target.parentElement.classList.contains("sugerida")){
       ev.preventDefault();
+    }
   }
 }
