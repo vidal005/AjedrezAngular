@@ -10,8 +10,7 @@ export class ServiceService {
   public casillas: Casilla[];
   constructor() {
     this.casillas =
-      [
-        new Casilla(new Pieza("black", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png")),
+      [ new Casilla(new Pieza("black", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png")),
         new Casilla(new Pieza("black", "n", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/n.png")),
         new Casilla(new Pieza("black", "b", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/b.png")),
         new Casilla(new Pieza("black", "q", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/q.png")),
@@ -27,11 +26,6 @@ export class ServiceService {
         new Casilla(new Pieza("black", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png")),
         new Casilla(new Pieza("black", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png")),
         new Casilla(new Pieza("black", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png")),
-        new Casilla(new Pieza("black", "b", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/b.png")),
-        new Casilla(),
-        new Casilla(),
-        new Casilla(),
-        new Casilla(new Pieza("black", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png")),
         new Casilla(),
         new Casilla(),
         new Casilla(),
@@ -43,7 +37,6 @@ export class ServiceService {
         new Casilla(),
         new Casilla(),
         new Casilla(),
-        new Casilla(new Pieza("black", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png")),
         new Casilla(),
         new Casilla(),
         new Casilla(),
@@ -52,13 +45,19 @@ export class ServiceService {
         new Casilla(),
         new Casilla(),
         new Casilla(),
-        new Casilla(new Pieza("white", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/r.png")),
         new Casilla(),
         new Casilla(),
         new Casilla(),
         new Casilla(),
         new Casilla(),
-        new Casilla(new Pieza("white", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/r.png")),
+        new Casilla(),
+        new Casilla(),
+        new Casilla(),
+        new Casilla(),
+        new Casilla(),
+        new Casilla(),
+        new Casilla(),
+        new Casilla(),
         new Casilla(new Pieza("white", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/r.png")),
         new Casilla(new Pieza("white", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png")),
         new Casilla(new Pieza("white", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png")),
@@ -85,6 +84,15 @@ export class ServiceService {
 
   getCasillas() {
     return this.casillas;
+  }
+
+  hacerMovimiento(WSmessage : string){
+
+    let iniPos = WSmessage.substr(0,WSmessage.indexOf("-"));
+    let finalPos = WSmessage.substr(WSmessage.indexOf("-"));
+    let pieza = this.casillas[iniPos].pieza;
+    this.casillas[finalPos].pieza = pieza;
+    this.casillas[iniPos].pieza = null;
   }
 
   getPosiblesPosiciones(numero: number) {
@@ -193,7 +201,12 @@ export class ServiceService {
         }
         pos[0] = pos[0] - 1;
         pos[1] = pos[1] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])].pieza;
+        if (this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }
       }
 
       //diagonal suroeste
@@ -216,7 +229,12 @@ export class ServiceService {
         }
         pos[0] = pos[0] + 1;
         pos[1] = pos[1] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])].pieza;
+        if (this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }
       }
 
       //diagonal noreste
@@ -238,7 +256,12 @@ export class ServiceService {
         }
         pos[0] = pos[0] - 1;
         pos[1] = pos[1] + 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])].pieza;
+        if (this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }
       }
 
       //diagonal sureste
@@ -262,7 +285,12 @@ export class ServiceService {
         }
         pos[0] = pos[0] + 1;
         pos[1] = pos[1] + 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] + 1])].pieza;
+        if (this.casillas[this.getPosicion([pos[0] + 1, pos[1] + 1])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] + 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }
       }
     }
     //**************************************************************************/
@@ -289,7 +317,12 @@ export class ServiceService {
           index = 8;
         }
         pos[0] = pos[0] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
+        if (this.casillas[this.getPosicion([pos[0] - 1, pos[1]])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }
       }
 
       ////abajo
@@ -309,9 +342,16 @@ export class ServiceService {
           //finalizar loop
           index = 8;
         }
+        console.log(this.casillas);
         pos[0] = pos[0] + 1;
         console.log(this.casillas[this.getPosicion([pos[0] + 1, pos[1]])]);
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
+        console.log([pos[0] + 1, pos[1]]);
+        if (this.casillas[this.getPosicion([pos[0] + 1, pos[1]])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }
       }
 
       ////derecha
@@ -333,8 +373,12 @@ export class ServiceService {
           index = 8;
         }
         pos[1] = pos[1] + 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0], pos[1] + 1])]) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
 
       ////izquierda
       pos = this.getXY(casilla.posicion);
@@ -354,8 +398,12 @@ export class ServiceService {
           index = 8;
         }
         pos[1] = pos[1] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0], pos[1] - 1])]) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
     }
 
     //************************************************************************* */
@@ -386,8 +434,12 @@ export class ServiceService {
           index = 8;
         }
         pos[0] = pos[0] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0] - 1, pos[1]])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1]])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
 
       ////abajo
       pos = this.getXY(casilla.posicion);
@@ -408,8 +460,12 @@ export class ServiceService {
           index = 8;
         }
         pos[0] = pos[0] + 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0] + 1, pos[1]])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1]])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
 
       ////derecha
       pos = this.getXY(casilla.posicion);
@@ -430,8 +486,12 @@ export class ServiceService {
           index = 8;
         }
         pos[1] = pos[1] + 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0], pos[1] + 1])]) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] + 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
 
       ////izquierda
       pos = this.getXY(casilla.posicion);
@@ -451,8 +511,12 @@ export class ServiceService {
           index = 8;
         }
         pos[1] = pos[1] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0], pos[1] - 1])]) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0], pos[1] - 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
 
 
       //alfil
@@ -477,8 +541,12 @@ export class ServiceService {
         }
         pos[0] = pos[0] - 1;
         pos[1] = pos[1] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] - 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
 
       ////diagonal suroeste
       pos = this.getXY(casilla.posicion);
@@ -500,8 +568,12 @@ export class ServiceService {
         }
         pos[0] = pos[0] + 1;
         pos[1] = pos[1] - 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] - 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
 
       ////diagonal noreste
       pos = this.getXY(casilla.posicion);
@@ -522,8 +594,12 @@ export class ServiceService {
         }
         pos[0] = pos[0] - 1;
         pos[1] = pos[1] + 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] - 1, pos[1] + 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
 
       ////diagonal sureste
 
@@ -546,14 +622,18 @@ export class ServiceService {
         }
         pos[0] = pos[0] + 1;
         pos[1] = pos[1] + 1;
-        piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] + 1])].pieza;
-      }
+        if (this.casillas[this.getPosicion([pos[0] + 1, pos[1] + 1])] != null) {
+          piezaEncontrada = this.casillas[this.getPosicion([pos[0] + 1, pos[1] + 1])].pieza;
+        }
+        else {
+          piezaEncontrada = null;
+        }      }
     }
     //************************************************************************* */
     //Rey
     else if (casilla.pieza != null && casilla.pieza.id.substr(0,1) == "k") {
       let pos = this.getXY(casilla.posicion);
-      let posibles = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
+      let posibles = [[1, 1], [1, -1], [-1, 1], [-1, -1],[1, 0], [0, 1], [0, -1], [-1, 0]];
       //Comprobar que no hay pieza amiga en el posible sitio
       for (let index = 0; index < posibles.length; index++) {
         let nuevaPosicion = [];

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Casilla } from 'src/app/modelo/casilla';
 import { ServiceService } from 'src/app/servicio/service.service';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import { WebSocketService } from 'src/app/servicio/web-socket.service';
 
 @Component({
   selector: 'app-casilla',
@@ -58,6 +59,7 @@ export class CasillaComponent implements OnInit {
   }
 
   onDrop(ev){
+    ev.preventDefault();
     let movimientos: number[];
     movimientos = this.servicio.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
     console.log(ev.target.parentElement);
@@ -67,6 +69,7 @@ export class CasillaComponent implements OnInit {
       this.servicio.casillas[casilla].pieza = this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza;
       this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza = null;
     }
+    
     var casillas = this.servicio.casillas;
     casillas.forEach(element => {
       element.resaltar = "null";

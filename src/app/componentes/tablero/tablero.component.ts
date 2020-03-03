@@ -29,11 +29,12 @@ export class TableroComponent implements OnInit {
     }
   }
 
-  drop(ev : CdkDragDrop<string[]>){
+ /* drop(ev : CdkDragDrop<string[]>){
     console.log("drop");
     console.log(ev.previousContainer);
     if (ev.previousContainer === ev.container) {
       moveItemInArray(ev.container.data, ev.previousIndex, ev.currentIndex);
     }
-  }
+    console.log(this.casillas);
+  }*/
 }

@@ -8,6 +8,9 @@ import { PiezaComponent } from './componentes/pieza/pieza.component';
 
 import { DragDropModule} from '@angular/cdk/drag-drop';
 import { CasillaComponent } from './componentes/casilla/casilla.component';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import $ from 'jquery';
 
 @NgModule({
   declarations: [
@@ -20,6 +23,8 @@ import { CasillaComponent } from './componentes/casilla/casilla.component';
     BrowserModule,
     AppRoutingModule,
     DragDropModule,
+    Stomp,
+    SockJS,
   ],
   providers: [],
   bootstrap: [AppComponent]
