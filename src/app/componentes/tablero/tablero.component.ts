@@ -5,6 +5,7 @@ import { ServiceService } from 'src/app/servicio/service.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 
+
 @Component({
   selector: 'app-tablero',
   templateUrl: './tablero.component.html',
@@ -25,7 +26,6 @@ export class TableroComponent implements OnInit {
       if(this.casillas[index].pieza != null){
         this.casillas[index].pieza.id += index;
       }
-      
     }
   }
 
