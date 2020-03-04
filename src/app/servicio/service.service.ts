@@ -7,12 +7,13 @@ import { of } from "rxjs";
   providedIn: "root"
 })
 export class ServiceService {
-  getChat(): any[] {
-    throw new Error("Method not implemented.");
-  }
+  
+  public chat : any[];
   public casillas: Casilla[];
   public jugador: String = "ninguno";
   public turno: String = "white";
+  public controladasBlack : Casilla[];
+  public controladasWhite : Casilla[];
   constructor() {
     this.casillas = [
       new Casilla(
@@ -277,6 +278,18 @@ export class ServiceService {
       this.casillas[index].posicionX = 25 + (index % 8) * 53;
       this.casillas[index].posicion = index;
     }
+  }
+  
+  getControladasBlack(){
+    return this.controladasBlack;
+  }
+
+  getControladasWhite(){
+    return this.controladasWhite;
+  }
+
+  getChat(){
+    return this.chat;
   }
 
   getCasillas() {
@@ -1114,29 +1127,29 @@ export class ServiceService {
   XYtoNLetra(xy: number[]) {
     switch (xy[1]) {
       case 0:
-        return xy[0]+"a";
+        return xy[0] + "a";
         break;
       case 1:
-        return xy[0]+"b";
+        return xy[0] + "b";
         break;
 
       case 2:
-        return xy[0]+"c";
+        return xy[0] + "c";
         break;
       case 3:
-        return xy[0]+"d";
+        return xy[0] + "d";
         break;
       case 4:
-        return xy[0]+"e";
+        return xy[0] + "e";
         break;
       case 5:
-        return xy[0]+"f";
+        return xy[0] + "f";
         break;
       case 6:
-        return xy[0]+"g";
+        return xy[0] + "g";
         break;
       case 7:
-        return xy[0]+"h";
+        return xy[0] + "h";
         break;
       default:
         break;
