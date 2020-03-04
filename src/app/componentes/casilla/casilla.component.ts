@@ -12,7 +12,7 @@ import { WebSocketService } from 'src/app/servicio/web-socket.service';
 export class CasillaComponent implements OnInit {
 
   @Input() casilla:Casilla;
-  constructor(public servicio : ServiceService) { }
+  constructor(public servicio : ServiceService,public serviciows : WebSocketService) { }
 
   ngOnInit(): void {
   }
@@ -68,6 +68,7 @@ export class CasillaComponent implements OnInit {
     if(casilla){
       this.servicio.casillas[casilla].pieza = this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza;
       this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza = null;
+      this.serviciows.sendMessage(ev.dataTransfer.getData("posicion")+"-"+casilla);
     }
     
     var casillas = this.servicio.casillas;

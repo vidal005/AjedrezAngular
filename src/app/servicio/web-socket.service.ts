@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
-import {Stomp} from 'stompjs';
-import {SockJS} from 'sockjs-client';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
 import $ from 'jquery';
 import { ServiceService } from './service.service';
 
@@ -9,16 +9,18 @@ import { ServiceService } from './service.service';
 })
 export class WebSocketService implements OnInit {
   ngOnInit(): void {
-    //this.iniciarConexionWebSocket();
+    
   }
   private serverUrl = 'http://localhost:8088/socket'
   private title = 'WebSockets chat';
   private stompClient;
   constructor(private servicio : ServiceService) {
+    this.iniciarConexionWebSocket();
   }
 
   iniciarConexionWebSocket(){
     console.log("iniciarConexion");
+  
     let ws = new SockJS(this.serverUrl);
     this.stompClient = Stomp.over(ws);
     let that = this;

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Casilla } from '../modelo/casilla';
 import { Pieza } from '../modelo/pieza';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { Pieza } from '../modelo/pieza';
 export class ServiceService {
 
   public casillas: Casilla[];
+  public jugador: String;
   constructor() {
     this.casillas =
       [ new Casilla(new Pieza("black", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png")),
@@ -86,13 +88,22 @@ export class ServiceService {
     return this.casillas;
   }
 
-  hacerMovimiento(WSmessage : string){
+  setJugador(color:string){
+    this.jugador = color;
+  }
 
-    let iniPos = WSmessage.substr(0,WSmessage.indexOf("-"));
-    let finalPos = WSmessage.substr(WSmessage.indexOf("-"));
+  hacerMovimiento(WSmessage : string){
+    let color = WSmessage.substr(0,1);
+    let iniPos = WSmessage.substr(1,WSmessage.indexOf("-"));
+    let finalPos = WSmessage.substr(WSmessage.indexOf("-")+1);
+    console.log(iniPos);
+    console.log(finalPos);
     let pieza = this.casillas[iniPos].pieza;
-    this.casillas[finalPos].pieza = pieza;
+    if(this.casillas[finalPos].pieza != null){
+      this.casillas[finalPos].pieza = null;
+    }
     this.casillas[iniPos].pieza = null;
+    this.casillas[finalPos].pieza = pieza;
   }
 
   getPosiblesPosiciones(numero: number) {
