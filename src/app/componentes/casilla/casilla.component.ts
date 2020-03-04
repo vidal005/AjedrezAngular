@@ -12,9 +12,7 @@ import { WebSocketService } from 'src/app/servicio/web-socket.service';
 export class CasillaComponent implements OnInit {
 
   @Input() casilla:Casilla;
-  
   constructor(public servicio : ServiceService,public serviciows : WebSocketService) { }
-
   ngOnInit(): void {
   }
 

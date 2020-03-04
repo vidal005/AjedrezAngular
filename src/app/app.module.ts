@@ -8,6 +8,7 @@ import { PiezaComponent } from './componentes/pieza/pieza.component';
 
 import { DragDropModule} from '@angular/cdk/drag-drop';
 import { CasillaComponent } from './componentes/casilla/casilla.component';
+import { ChatComponent } from './componentes/chat/chat.component';
 
 
 
@@ -16,7 +17,8 @@ import { CasillaComponent } from './componentes/casilla/casilla.component';
     AppComponent,
     TableroComponent,
     PiezaComponent,
-    CasillaComponent
+    CasillaComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
