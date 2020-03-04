@@ -38,3 +38,4 @@ export class WebSocketService implements OnInit {
     this.stompClient.send("/app/send/move/room1" , {}, message);
   }
 }
+  
