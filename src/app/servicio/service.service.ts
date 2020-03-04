@@ -10,6 +10,7 @@ export class ServiceService {
 
   public casillas: Casilla[];
   public jugador: String;
+  public turno: String = 'white';
   constructor() {
     this.casillas =
       [ new Casilla(new Pieza("black", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png")),
@@ -60,7 +61,7 @@ export class ServiceService {
         new Casilla(),
         new Casilla(),
         new Casilla(),
-        new Casilla(new Pieza("white", "r", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/r.png")),
+        new Casilla(new Pieza("white", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png")),
         new Casilla(new Pieza("white", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png")),
         new Casilla(new Pieza("white", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png")),
         new Casilla(new Pieza("white", "p", "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png")),
@@ -92,18 +93,31 @@ export class ServiceService {
     this.jugador = color;
   }
 
+  getTurno(){
+    return this.turno;
+  }
+
+  setTurno(color : String){
+    this.turno = color;
+  }
+
   hacerMovimiento(WSmessage : string){
-    let color = WSmessage.substr(0,1);
-    let iniPos = WSmessage.substr(1,WSmessage.indexOf("-"));
+    
+    let color = WSmessage.substr(0,5);
+    let iniPos = WSmessage.substr(5,WSmessage.indexOf("-")-5);
     let finalPos = WSmessage.substr(WSmessage.indexOf("-")+1);
+    console.log(color);
     console.log(iniPos);
     console.log(finalPos);
-    let pieza = this.casillas[iniPos].pieza;
+    if(color != this.jugador){
+      let pieza = this.casillas[iniPos].pieza;
     if(this.casillas[finalPos].pieza != null){
       this.casillas[finalPos].pieza = null;
     }
     this.casillas[iniPos].pieza = null;
     this.casillas[finalPos].pieza = pieza;
+    }
+    
   }
 
   getPosiblesPosiciones(numero: number) {

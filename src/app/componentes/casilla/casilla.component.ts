@@ -61,16 +61,20 @@ export class CasillaComponent implements OnInit {
   onDrop(ev){
     ev.preventDefault();
     let movimientos: number[];
-    movimientos = this.servicio.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
-    console.log(ev.target.parentElement);
-    let casilla = movimientos.find(element => element == ev.target.parentElement.id);
-    console.log(casilla);
-    if(casilla){
-      this.servicio.casillas[casilla].pieza = this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza;
-      this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza = null;
-      this.serviciows.sendMessage(ev.dataTransfer.getData("posicion")+"-"+casilla);
-    }
-    
+    if(this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza != null
+      && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.jugador
+      && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.getTurno() ){
+      movimientos = this.servicio.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
+      console.log(ev.target.parentElement);
+      let casilla = movimientos.find(element => element == ev.target.parentElement.id);
+      console.log(casilla);
+      if(casilla){
+        this.servicio.casillas[casilla].pieza = this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza;
+        this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza = null;
+        this.serviciows.sendMessage(this.servicio.jugador+ev.dataTransfer.getData("posicion")+"-"+casilla);
+      }
+      this.servicio.setTurno((this.servicio.jugador === "white")? "black":"white");
+  }
     var casillas = this.servicio.casillas;
     casillas.forEach(element => {
       element.resaltar = "null";

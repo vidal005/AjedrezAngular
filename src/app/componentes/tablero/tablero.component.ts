@@ -17,6 +17,10 @@ export class TableroComponent implements OnInit {
   constructor(private service: ServiceService) {
     this.casillas = service.getCasillas();
   }
+  setJugador(color : string ){
+    this.service.setJugador(color);
+    console.log(color);
+  }
 
   ngOnInit(): void {
     for (let index = 0; index < this.casillas.length; index++) {
@@ -28,13 +32,4 @@ export class TableroComponent implements OnInit {
       }
     }
   }
-
- /* drop(ev : CdkDragDrop<string[]>){
-    console.log("drop");
-    console.log(ev.previousContainer);
-    if (ev.previousContainer === ev.container) {
-      moveItemInArray(ev.container.data, ev.previousIndex, ev.currentIndex);
-    }
-    console.log(this.casillas);
-  }*/
 }
