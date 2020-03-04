@@ -14,11 +14,13 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class TableroComponent implements OnInit {
 
   public casillas: Casilla[];
+  public jugador : String = "ninguno";
   constructor(private service: ServiceService) {
     this.casillas = service.getCasillas();
   }
   setJugador(color : string ){
     this.service.setJugador(color);
+    this.jugador = color;
     console.log(color);
   }
 

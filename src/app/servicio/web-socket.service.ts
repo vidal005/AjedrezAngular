@@ -25,7 +25,7 @@ export class WebSocketService implements OnInit {
     this.stompClient = Stomp.over(ws);
     let that = this;
     this.stompClient.connect({}, function(frame) {
-      that.stompClient.subscribe("/move", (message) => {
+      that.stompClient.subscribe("/move/room1", (message) => {
         if(message.body) {
           that.servicio.hacerMovimiento(message.body);
           console.log(message.body);
@@ -35,6 +35,6 @@ export class WebSocketService implements OnInit {
   }
 
   sendMessage(message){
-    this.stompClient.send("/app/send/move" , {}, message);
+    this.stompClient.send("/app/send/move/room1" , {}, message);
   }
 }

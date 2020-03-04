@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 export class ServiceService {
 
   public casillas: Casilla[];
-  public jugador: String;
+  public jugador: String = 'ninguno';
   public turno: String = 'white';
   constructor() {
     this.casillas =
@@ -111,11 +111,12 @@ export class ServiceService {
     console.log(finalPos);
     if(color != this.jugador){
       let pieza = this.casillas[iniPos].pieza;
-    if(this.casillas[finalPos].pieza != null){
-      this.casillas[finalPos].pieza = null;
-    }
-    this.casillas[iniPos].pieza = null;
-    this.casillas[finalPos].pieza = pieza;
+      if(this.casillas[finalPos].pieza != null){
+        this.casillas[finalPos].pieza = null;
+      }
+      this.casillas[iniPos].pieza = null;
+      this.casillas[finalPos].pieza = pieza;
+      this.turno = this.jugador;
     }
     
   }
