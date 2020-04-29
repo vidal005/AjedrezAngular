@@ -12,8 +12,8 @@ export class ServiceService {
   public casillas: Casilla[];
   public jugador: String = "ninguno";
   public turno: String = "white";
-  public controladasBlack : Casilla[];
-  public controladasWhite : Casilla[];
+  public amenazadasBlack = new Set();
+  public amenazadasWhite = new Set();
   constructor() {
     this.casillas = [
       new Casilla(
@@ -280,12 +280,30 @@ export class ServiceService {
     }
   }
   
-  getControladasBlack(){
-    return this.controladasBlack;
+  getAmenazadasBlack(){
+    return this.amenazadasBlack;
   }
 
-  getControladasWhite(){
-    return this.controladasWhite;
+  getAmenazadasWhite(){
+    return this.amenazadasWhite;
+  }
+  actualizarControladasBlack(){
+    let ocupadasNegras = this.getCasillasOcupadas("black");
+    let amenazadas = new Set();
+  }
+  actualizarControladasWhite(){
+    let ocupadasBlancas = this.getCasillasOcupadas("black");
+    let amenazadas = new Set();
+  }
+
+  getAmenazadasPieza(casilla : Casilla){
+    let posiciones = this.getPosiblesPosiciones(casilla.posicion)
+    
+  }
+
+
+  getCasillasOcupadas(color:string){
+    return this.casillas.filter(casilla => casilla.pieza != null && casilla.pieza.color == color);
   }
 
   getChat(){
