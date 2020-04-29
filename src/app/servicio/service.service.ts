@@ -298,7 +298,16 @@ export class ServiceService {
 
   getAmenazadasPieza(casilla : Casilla){
     let posiciones = this.getPosiblesPosiciones(casilla.posicion)
-    
+    let amenazadas = new Set()
+    posiciones.forEach(pos => {
+      if(casilla.pieza.id == "p" && this.getXY(casilla.posicion)[1] != this.getXY(pos)[1]){
+        amenazadas.add(this.casillas[pos])
+      }
+      else {
+        amenazadas.add(this.casillas[pos])
+      }
+    });
+    return amenazadas;
   }
 
 
