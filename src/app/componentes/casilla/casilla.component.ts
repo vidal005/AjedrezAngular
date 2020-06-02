@@ -73,6 +73,8 @@ export class CasillaComponent implements OnInit {
         this.serviciows.sendMessage(this.servicio.jugador+ev.dataTransfer.getData("posicion")+"-"+casilla);
       }
       this.servicio.setTurno((this.servicio.jugador === "white")? "black":"white");
+      this.servicio.actualizarAmenazadasBlack();
+      this.servicio.actualizarAmenazadasWhite();
   }
     var casillas = this.servicio.casillas;
     casillas.forEach(element => {
