@@ -31,7 +31,6 @@ export class CasillaComponent implements OnInit {
       else{
         casilla.resaltar = "green";
       }
-      console.log(movimientos[index]);
     }
   }
 
@@ -40,7 +39,6 @@ export class CasillaComponent implements OnInit {
     casillas.forEach(element => {
       element.resaltar = "null";
     });
-    console.log(ev.target);
 
     var movimientos = this.servicio.getPosiblesPosiciones(posicion);
     casillas[posicion].resaltar = "green-select";
@@ -52,7 +50,6 @@ export class CasillaComponent implements OnInit {
       else{
         casilla.resaltar = "green";
       }
-      console.log(movimientos[index]);
       ev.dataTransfer.setData("posicion", ev.target.parentElement.id)
     }
   }
@@ -64,15 +61,21 @@ export class CasillaComponent implements OnInit {
       && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.jugador
       && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.getTurno() ){
       movimientos = this.servicio.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
-      console.log(ev.target.parentElement);
+
       let casilla = movimientos.find(element => element == ev.target.parentElement.id);
-      console.log(casilla);
+
       if(casilla){
         this.servicio.casillas[casilla].pieza = this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza;
         this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza = null;
+        if((this.servicio.getXY(casilla)[0] == 0 || this.servicio.getXY(casilla)[0] == 7) 
+        && this.servicio.casillas[casilla].pieza.id.substr(0,1) == "p")
+        {
+          this.servicio.casillas[casilla].pieza.id = "q"+ this.servicio.casillas[casilla].pieza.id.substr(1);
+          this.servicio.casillas[casilla].pieza.imagen = (this.servicio.casillas[casilla].pieza.color == "white")? this.servicio.imagenQueenWhite:this.servicio.imagenQueenBlack;
+        }
         this.serviciows.sendMessage(this.servicio.jugador+ev.dataTransfer.getData("posicion")+"-"+casilla);
       }
-      this.servicio.setTurno((this.servicio.jugador === "white")? "black":"white");
+      this.servicio.setTurno((this.servicio.jugador == "white")? "black":"white");
       this.servicio.actualizarAmenazadasBlack();
       this.servicio.actualizarAmenazadasWhite();
   }
@@ -80,11 +83,11 @@ export class CasillaComponent implements OnInit {
     casillas.forEach(element => {
       element.resaltar = "null";
     });
-    console.log("onDrop");
+
   }
 
   onDragOver(ev){
     ev.preventDefault();
-    console.log("onDragover");
+
   }
 }

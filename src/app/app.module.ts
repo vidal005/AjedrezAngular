@@ -9,6 +9,7 @@ import { PiezaComponent } from './componentes/pieza/pieza.component';
 import { DragDropModule} from '@angular/cdk/drag-drop';
 import { CasillaComponent } from './componentes/casilla/casilla.component';
 import { ChatComponent } from './componentes/chat/chat.component';
+import { ListaMovimientosComponent } from './componentes/lista-movimientos/lista-movimientos.component';
 
 
 
@@ -19,6 +20,7 @@ import { ChatComponent } from './componentes/chat/chat.component';
     PiezaComponent,
     CasillaComponent,
     ChatComponent,
+    ListaMovimientosComponent,
   ],
   imports: [
     BrowserModule,

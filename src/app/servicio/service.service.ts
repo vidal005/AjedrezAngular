@@ -14,6 +14,10 @@ export class ServiceService {
   public turno: String = "white";
   public amenazadasBlack = new Set();
   public amenazadasWhite = new Set();
+
+  public imagenQueenBlack = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/q.png";
+  public imagenQueenWhite = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/q.png";
+  
   constructor() {
     this.casillas = [
       new Casilla(
@@ -305,8 +309,6 @@ export class ServiceService {
       });
     });
     this.amenazadasBlack = amenazadas;
-    console.log("amenazadas black");
-    console.log(Array.from(this.amenazadasBlack).sort((a:Casilla,b:Casilla) => a.posicion - b.posicion));
   }
   actualizarAmenazadasWhite(){
     let ocupadasBlancas = this.getCasillasOcupadas("white");
@@ -317,8 +319,6 @@ export class ServiceService {
       });
     });
     this.amenazadasWhite = amenazadas;
-    console.log("amenazadas white");
-    console.log(Array.from(this.amenazadasWhite).sort((a:Casilla,b:Casilla) => a.posicion - b.posicion));
   }
 
   getAmenazasRey(color:string){
@@ -374,9 +374,7 @@ export class ServiceService {
     let color = WSmessage.substr(0, 5);
     let iniPos = WSmessage.substr(5, WSmessage.indexOf("-") - 5);
     let finalPos = WSmessage.substr(WSmessage.indexOf("-") + 1);
-    console.log(color);
-    console.log(iniPos);
-    console.log(finalPos);
+
     if (color != this.jugador) {
       let pieza = this.casillas[iniPos].pieza;
       if (this.casillas[finalPos].pieza != null) {
@@ -384,9 +382,9 @@ export class ServiceService {
       }
       this.casillas[iniPos].pieza = null;
       this.casillas[finalPos].pieza = pieza;
-      console.log("Amenazadas Black")
+
       this.actualizarAmenazadasBlack()
-      console.log("Amenazadas White")
+
       this.actualizarAmenazadasWhite()
       this.turno = this.jugador;
     }
@@ -534,7 +532,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] - 1]));
-        console.log("noroeste" + this.getPosicion([pos[0] - 1, pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -572,7 +570,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] - 1]));
-        console.log("suroeste" + this.getPosicion([pos[0] + 1, pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -610,7 +608,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] + 1]));
-        console.log("noreste" + this.getPosicion([pos[0] - 1, pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -649,7 +647,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] + 1]));
-        console.log("sureste " + this.getPosicion([pos[0] + 1, pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -688,7 +686,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1]]));
-        console.log("arriba" + this.getPosicion([pos[0] - 1, pos[1]]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -720,15 +718,14 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1]]));
-        console.log("abajo" + this.getPosicion([pos[0] + 1, pos[1]]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
         }
-        console.log(this.casillas);
+
         pos[0] = pos[0] + 1;
-        console.log(this.casillas[this.getPosicion([pos[0] + 1, pos[1]])]);
-        console.log([pos[0] + 1, pos[1]]);
+
         if (this.casillas[this.getPosicion([pos[0] + 1, pos[1]])] != null) {
           piezaEncontrada = this.casillas[
             this.getPosicion([pos[0] + 1, pos[1]])
@@ -756,7 +753,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] + 1]));
-        console.log("derecha" + this.getPosicion([pos[0], pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -789,7 +786,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] - 1]));
-        console.log("izquierda" + this.getPosicion([pos[0], pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -830,7 +827,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1]]));
-        console.log("arriba" + this.getPosicion([pos[0] - 1, pos[1]]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -863,7 +860,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1]]));
-        console.log("abajo" + this.getPosicion([pos[0] + 1, pos[1]]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -896,7 +893,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] + 1]));
-        console.log("derecha" + this.getPosicion([pos[0], pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -929,7 +926,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] - 1]));
-        console.log("izquierda" + this.getPosicion([pos[0], pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -968,7 +965,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] - 1]));
-        console.log("noroeste" + this.getPosicion([pos[0] - 1, pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1006,7 +1003,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] - 1]));
-        console.log("suroeste" + this.getPosicion([pos[0] + 1, pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1044,7 +1041,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] + 1]));
-        console.log("noreste" + this.getPosicion([pos[0] - 1, pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1083,7 +1080,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] + 1]));
-        console.log("sureste " + this.getPosicion([pos[0] + 1, pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1175,7 +1172,7 @@ export class ServiceService {
             posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
           }
         }
-        console.log(posiblesPosiciones);
+
       }
     }
 
@@ -1188,13 +1185,13 @@ export class ServiceService {
       piezaComida = this.casillas[posicion].pieza;
       this.casillas[posicion].pieza = pieza;
       casilla.pieza = null;
-      if(this.casillas[posicion].pieza.color == "white"){
+      if(this.casillas[posicion].pieza.color == "white" && !(this.casillas[posicion].pieza.id.substr(0,1) == "k") ){
         this.actualizarAmenazadasBlack();
         if(this.amenazadasBlack.has(reyWhite)){
           posicionesMate.push(posicion);
         }
       }
-      else if (this.casillas[posicion].pieza.color == "black"){
+      else if (this.casillas[posicion].pieza.color == "black"   && !(this.casillas[posicion].pieza.id.substr(0,1) == "k")){
         this.actualizarAmenazadasWhite();
         if(this.amenazadasWhite.has(reyBlack)){
           posicionesMate.push(posicion);
@@ -1361,7 +1358,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] - 1]));
-        console.log("noroeste" + this.getPosicion([pos[0] - 1, pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1399,7 +1396,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] - 1]));
-        console.log("suroeste" + this.getPosicion([pos[0] + 1, pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1437,7 +1434,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] + 1]));
-        console.log("noreste" + this.getPosicion([pos[0] - 1, pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1476,7 +1473,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] + 1]));
-        console.log("sureste " + this.getPosicion([pos[0] + 1, pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1515,7 +1512,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1]]));
-        console.log("arriba" + this.getPosicion([pos[0] - 1, pos[1]]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1547,15 +1544,14 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1]]));
-        console.log("abajo" + this.getPosicion([pos[0] + 1, pos[1]]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
         }
-        console.log(this.casillas);
+
         pos[0] = pos[0] + 1;
-        console.log(this.casillas[this.getPosicion([pos[0] + 1, pos[1]])]);
-        console.log([pos[0] + 1, pos[1]]);
+
         if (this.casillas[this.getPosicion([pos[0] + 1, pos[1]])] != null) {
           piezaEncontrada = this.casillas[
             this.getPosicion([pos[0] + 1, pos[1]])
@@ -1583,7 +1579,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] + 1]));
-        console.log("derecha" + this.getPosicion([pos[0], pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1616,7 +1612,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] - 1]));
-        console.log("izquierda" + this.getPosicion([pos[0], pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1657,7 +1653,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1]]));
-        console.log("arriba" + this.getPosicion([pos[0] - 1, pos[1]]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1690,7 +1686,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1]]));
-        console.log("abajo" + this.getPosicion([pos[0] + 1, pos[1]]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1723,7 +1719,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] + 1]));
-        console.log("derecha" + this.getPosicion([pos[0], pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1756,7 +1752,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0], pos[1] - 1]));
-        console.log("izquierda" + this.getPosicion([pos[0], pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1795,7 +1791,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] - 1]));
-        console.log("noroeste" + this.getPosicion([pos[0] - 1, pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1833,7 +1829,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] - 1]));
-        console.log("suroeste" + this.getPosicion([pos[0] + 1, pos[1] - 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1871,7 +1867,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] - 1, pos[1] + 1]));
-        console.log("noreste" + this.getPosicion([pos[0] - 1, pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -1910,7 +1906,7 @@ export class ServiceService {
         index++
       ) {
         posiblesPosiciones.push(this.getPosicion([pos[0] + 1, pos[1] + 1]));
-        console.log("sureste " + this.getPosicion([pos[0] + 1, pos[1] + 1]));
+
         if (piezaEncontrada != null) {
           //finalizar loop
           index = 8;
@@ -2002,7 +1998,6 @@ export class ServiceService {
             posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
           }
         }
-        console.log(posiblesPosiciones);
       }
     }
 
