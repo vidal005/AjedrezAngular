@@ -20,7 +20,9 @@ export class CasillaComponent implements OnInit {
     var movimientos = this.servicio.getPosiblesPosiciones(posicion);
     var casillas = this.servicio.casillas;
     casillas.forEach(element => {
+      if(element.resaltar != "red-take"){
       element.resaltar = "null";
+      }
     });
     casillas[posicion].resaltar = "green-select";
     for (let index = 0; index < movimientos.length; index++) {
@@ -37,7 +39,9 @@ export class CasillaComponent implements OnInit {
   onDragStart(ev, posicion){
     var casillas = this.servicio.casillas;
     casillas.forEach(element => {
+      if(element.resaltar != "red-take"){
       element.resaltar = "null";
+      }
     });
 
     var movimientos = this.servicio.getPosiblesPosiciones(posicion);
@@ -58,7 +62,7 @@ export class CasillaComponent implements OnInit {
     ev.preventDefault();
     let movimientos: number[];
     if(this.servicio.casillas[ev.dataTransfer.getData("posicion")] != null
-      && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.jugador
+      && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.colorJugador
       && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.getTurno() ){
       movimientos = this.servicio.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
 
@@ -75,13 +79,15 @@ export class CasillaComponent implements OnInit {
         }
         this.serviciows.sendMessage(this.servicio.jugador+ev.dataTransfer.getData("posicion")+"-"+casilla);
       }
-      this.servicio.setTurno((this.servicio.jugador == "white")? "black":"white");
+      this.servicio.setTurno((this.servicio.colorJugador == "white")? "black":"white");
       this.servicio.actualizarAmenazadasBlack();
       this.servicio.actualizarAmenazadasWhite();
   }
     var casillas = this.servicio.casillas;
     casillas.forEach(element => {
+      if(element.resaltar != "red-take"){
       element.resaltar = "null";
+      }
     });
 
   }

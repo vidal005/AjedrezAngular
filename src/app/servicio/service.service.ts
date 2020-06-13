@@ -2,6 +2,9 @@ import { Injectable } from "@angular/core";
 import { Casilla } from "../modelo/casilla";
 import { Pieza } from "../modelo/pieza";
 import { of } from "rxjs";
+import { element } from 'protractor';
+import { Usuario } from '../modelo/usuario';
+import { RESTservicioService } from './restservicio.service';
 
 @Injectable({
   providedIn: "root"
@@ -10,15 +13,16 @@ export class ServiceService {
   
   public chat : any[];
   public casillas: Casilla[];
-  public jugador: String = "ninguno";
+  public jugador: Usuario ;
+  public colorJugador = 'ninguno';
   public turno: String = "white";
   public amenazadasBlack = new Set();
   public amenazadasWhite = new Set();
 
   public imagenQueenBlack = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/q.png";
   public imagenQueenWhite = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/q.png";
-  
-  constructor() {
+
+  constructor(private restServicio : RESTservicioService) {
     this.casillas = [
       new Casilla(
         new Pieza(
@@ -277,11 +281,13 @@ export class ServiceService {
         )
       )
     ];
+
     for (let index = 0; index < this.casillas.length; index++) {
       this.casillas[index].posicionY = 25 + Math.floor(index / 8) * 53;
       this.casillas[index].posicionX = 25 + (index % 8) * 53;
       this.casillas[index].posicion = index;
     }
+    this.jugador = restServicio.currentUser;
   }
   
   getAmenazadasBlack(){
@@ -309,6 +315,14 @@ export class ServiceService {
       });
     });
     this.amenazadasBlack = amenazadas;
+
+    let reyWhite = this.casillas.find(element => element.pieza != null && element.pieza.id.substr(0,1) == "k" && element.pieza.color == "white");
+    if(amenazadas.has(reyWhite)){
+      this.casillas[reyWhite.posicion].resaltar = "red-take";
+    }
+    else{
+      this.casillas[reyWhite.posicion].resaltar = "null";
+    }
   }
   actualizarAmenazadasWhite(){
     let ocupadasBlancas = this.getCasillasOcupadas("white");
@@ -319,6 +333,15 @@ export class ServiceService {
       });
     });
     this.amenazadasWhite = amenazadas;
+    let reyBlack = this.casillas.find(element => element.pieza != null && element.pieza.id.substr(0,1) == "k" && element.pieza.color == "black");
+
+    if(amenazadas.has(reyBlack)){
+      this.casillas[reyBlack.posicion].resaltar = "red-take";
+    }
+    else{
+      this.casillas[reyBlack.posicion].resaltar = "null";
+    }
+
   }
 
   getAmenazasRey(color:string){
@@ -358,8 +381,8 @@ export class ServiceService {
     return this.casillas;
   }
 
-  setJugador(color: string) {
-    this.jugador = color;
+  setJugador(jugador: Usuario) {
+    this.jugador = jugador;
   }
 
   getTurno() {
@@ -375,7 +398,7 @@ export class ServiceService {
     let iniPos = WSmessage.substr(5, WSmessage.indexOf("-") - 5);
     let finalPos = WSmessage.substr(WSmessage.indexOf("-") + 1);
 
-    if (color != this.jugador) {
+    if (color != this.colorJugador) {
       let pieza = this.casillas[iniPos].pieza;
       if (this.casillas[finalPos].pieza != null) {
         this.casillas[finalPos].pieza = null;
@@ -386,7 +409,7 @@ export class ServiceService {
       this.actualizarAmenazadasBlack()
 
       this.actualizarAmenazadasWhite()
-      this.turno = this.jugador;
+      this.turno = this.colorJugador;
     }
   }
 
@@ -1210,9 +1233,6 @@ export class ServiceService {
         return true;
       }
     }
-
-    
-
     return posiblesPosiciones.filter(clavado);
   }
 

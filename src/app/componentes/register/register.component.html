@@ -1,0 +1,47 @@
+<h2>Register</h2>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="name">Nombre</label>
+        <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div *ngIf="f.name.errors.required">Introducir Nombre</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="lastName">Apellido</label>
+        <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+        <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+            <div *ngIf="f.lastName.errors.required">Introducir Apellido</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="nick">Nick</label>
+        <input type="text" formControlName="nick" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nick.errors }" />
+        <div *ngIf="submitted && f.nick.errors" class="invalid-feedback">
+            <div *ngIf="f.nick.errors.required">Nick requerido</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Contraseña requerida</div>
+            <div *ngIf="f.password.errors.minlength">La contraseña debe tener almenos 6 caracteres</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email requerido</div>
+            <div *ngIf="f.email.errors.minlength">La contraseña debe tener almenos 6 caracteres</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Registrar
+        </button>
+        <a routerLink="/login" class="btn btn-link">Cancel</a>
+    </div>
+</form>
