@@ -8,13 +8,10 @@ import { Room } from '../modelo/room';
   providedIn: 'root'
 })
 export class RESTservicioService {
-
-
-  crearPartida(partida : Partida) {
-      let room = new Room();
-      room.partida = partida;
-    return this.http.post('http://localhost:8082/ajedrez/addRoom', room,{headers : {'Access-Control-Allow-Origin': '*'}})
+  getRoom(id: any) {
+    return this.http.get('http://localhost:8082/ajedrez/getRoom/'+id);
   }
+
   
   public postId: string;
   public currentUser: Usuario;
@@ -37,5 +34,20 @@ export class RESTservicioService {
   getPartidasOnline() {
     return this.http.get('http://localhost:8082/ajedrez/partidasOnline')
   }
+
+  getRooms(){
+    return this.http.get('http://localhost:8082/ajedrez/getRooms')
+  }
+
+  crearPartida(partida : Partida) {
+    return this.http.post('http://localhost:8082/ajedrez/addPartida', partida,{headers : {'Access-Control-Allow-Origin': '*'}})
+  }
+  
+  crearRoom(partida : Partida) {
+    let room  = new Room();
+    room.partida = partida;
+    return this.http.post('http://localhost:8082/ajedrez/addRoom', room,{headers : {'Access-Control-Allow-Origin': '*'}})
+  }
+
 
 }

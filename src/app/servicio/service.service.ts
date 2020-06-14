@@ -5,6 +5,7 @@ import { of } from "rxjs";
 import { element } from 'protractor';
 import { Usuario } from '../modelo/usuario';
 import { RESTservicioService } from './restservicio.service';
+import { Partida } from '../modelo/partida';
 
 @Injectable({
   providedIn: "root"
@@ -12,6 +13,7 @@ import { RESTservicioService } from './restservicio.service';
 export class ServiceService {
   
   public chat : any[];
+  public partida:Partida;
   public casillas: Casilla[];
   public jugador: Usuario ;
   public colorJugador = 'ninguno';

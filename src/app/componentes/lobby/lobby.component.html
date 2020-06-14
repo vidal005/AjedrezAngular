@@ -9,13 +9,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let partida of partidasOnline">
-        <th scope="row">{{partida.id}}</th>
-        <td>{{ partida.jugadorBlancas.nick }}</td>
-        <td>{{ partida.jugadorNegras.nick }}</td>
-        <td>{{ partida.resultado }}</td>
-        <td *ngIf="partida.resultado == 'InGame'; else elseBlock">{{ partida.resultado }}</td>
-        <td #elseBlock><a class="nav-link" [routerLink]="['/partida']">Unirse a la partida</a></td>
+      <tr *ngFor="let room of roomsOnline">
+        <th scope="row">{{room.partida.id}}</th>
+        <td>{{ room.partida.jugadorBlancas.nick }}</td>
+        <td *ngIf="room.partida.jugadorNegras == null; else elseNegras">Esperando oponente</td>
+        <td #elseNegras>{{ room.partida.jugadorNegras.nick }}</td>
+        <td *ngIf="room.partida.resultado == 'InGame'; else elseBlock">{{ room.partida.resultado }}</td>
+        <td #elseBlock><a class="nav-link" [routerLink]="['/partida', room.id]">Unirse a la partida</a></td>
       </tr>
     </tbody>
   </table>
