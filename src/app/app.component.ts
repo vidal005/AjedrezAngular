@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import $ from 'jquery';
+import { RESTservicioService } from './servicio/restservicio.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent {
   private title = 'WebSockets chat';
   private stompClient;
 
-  constructor(){
+  constructor(private servicio:RESTservicioService){
     this.initializeWebSocketConnection();
   }
 

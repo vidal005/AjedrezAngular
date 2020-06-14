@@ -13,8 +13,7 @@ export class HomeComponent implements OnInit {
     users = [];
 
     constructor(
-        
-        private userService: RESTservicioService
+        public userService: RESTservicioService
     ) {
         this.currentUser = this.userService.currentUser;
     }

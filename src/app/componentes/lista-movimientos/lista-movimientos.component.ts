@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { RESTservicioService } from 'src/app/servicio/restservicio.service';
+import { ServiceService } from 'src/app/servicio/service.service';
+import { Partida } from 'src/app/modelo/partida';
 
 @Component({
   selector: 'app-lista-movimientos',
@@ -7,7 +10,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaMovimientosComponent implements OnInit {
 
-  constructor() { }
+  public partida : Partida;
+  constructor(public servicioRest:RESTservicioService, public servicoAjedrez:ServiceService) { }
 
   ngOnInit(): void {
   }

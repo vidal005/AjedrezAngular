@@ -20,6 +20,10 @@ import{FormGroup,FormBuilder,Validators,FormsModule} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './componentes/register/register.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
+import { LobbyComponent } from './componentes/lobby/lobby.component';
+import { PerfilComponent } from './componentes/perfil/perfil.component';
+import { HistorialComponent } from './componentes/historial/historial.component';
+import { PartidaComponent } from './componentes/partida/partida.component';
 
 
 @NgModule({
@@ -35,6 +39,10 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
     AlertComponent,
     RegisterComponent,
     NavbarComponent,
+    LobbyComponent,
+    PerfilComponent,
+    HistorialComponent,
+    PartidaComponent,
   ],
   imports: [
     BrowserModule,

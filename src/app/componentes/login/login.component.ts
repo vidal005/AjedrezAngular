@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
        private formBuilder: FormBuilder,
        private route: ActivatedRoute,
        private router: Router,
-       private service: RESTservicioService,
+       public service: RESTservicioService,
        private alertService: AlertServiceService,
        
    ) {

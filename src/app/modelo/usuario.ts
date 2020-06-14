@@ -1,8 +1,8 @@
 export class Usuario {
-    private id : string;
-    private name : string;
-    private lastName : string;
-    private nick : string;
-    private email : string;
-    private estado : string;
+    public id : string;
+    public name : string;
+    public lastName : string;
+    public nick : string;
+    public email : string;
+    public estado : string;
 }

@@ -11,7 +11,7 @@ import { RESTservicioService } from 'src/app/servicio/restservicio.service';
 export class NavbarComponent implements OnInit {
 
   public currentUser : Usuario;
-  constructor(private servicio:RESTservicioService) { 
+  constructor(public servicio:RESTservicioService) { 
 
     this.currentUser = servicio.currentUser;
   }

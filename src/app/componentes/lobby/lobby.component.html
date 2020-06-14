@@ -1,0 +1,21 @@
+<table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Id Partida</th>
+        <th scope="col">Jugador Blancas</th>
+        <th scope="col">Jugador Negras</th>
+        <th scope="col">Resultado</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let partida of partidasOnline">
+        <th scope="row">{{partida.id}}</th>
+        <td>{{ partida.jugadorBlancas.nick }}</td>
+        <td>{{ partida.jugadorNegras.nick }}</td>
+        <td>{{ partida.resultado }}</td>
+        <td *ngIf="partida.resultado == 'InGame'; else elseBlock">{{ partida.resultado }}</td>
+        <td #elseBlock><a class="nav-link" [routerLink]="['/partida']">Unirse a la partida</a></td>
+      </tr>
+    </tbody>
+  </table>
