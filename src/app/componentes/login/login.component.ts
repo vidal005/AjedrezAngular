@@ -26,8 +26,9 @@ export class LoginComponent implements OnInit {
        private alertService: AlertServiceService,
        
    ) {
+       let user : Usuario = JSON.parse(sessionStorage.getItem('usuario'));
        // redirect to home if already logged in
-       if (this.service.currentUser) {
+       if (user) {
            this.router.navigate(['/home']);
        }
    }
@@ -65,6 +66,7 @@ export class LoginComponent implements OnInit {
                    this.router.navigate(['/home']);
                    this.loginIncorrecto = false;
                    this.service.currentUser = data;
+                   sessionStorage.setItem('usuario',JSON.stringify(data));
                },
                error => {   
                    this.alertService.error(error);

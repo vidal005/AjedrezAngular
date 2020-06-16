@@ -13,7 +13,7 @@ import { Room } from 'src/app/modelo/room';
 export class LobbyComponent implements OnInit {
 
   public partidasOnline : Array<Partida> = new Array<Partida>();
-  public roomsOnline : Array<Room> = new Array<Room>();
+  public roomsOnline : Array<Partida>;
 
   constructor(private servicio:RESTservicioService, private alertService :AlertServiceService) {
 
@@ -28,18 +28,13 @@ export class LobbyComponent implements OnInit {
       });
 
 
-      this.servicio.getRooms().subscribe(
-        (data : Array<Room>) => {
-  
-            this.roomsOnline = data;
-        },
-        error => {   
-            this.alertService.error(error);
-            this.roomsOnline = [];
-        });
+     
    }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+
+    let datos : any = await this.servicio.getRooms();
+    this.roomsOnline = datos;
   }
 
 }

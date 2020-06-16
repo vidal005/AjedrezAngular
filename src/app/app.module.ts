@@ -24,6 +24,7 @@ import { LobbyComponent } from './componentes/lobby/lobby.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { HistorialComponent } from './componentes/historial/historial.component';
 import { PartidaComponent } from './componentes/partida/partida.component';
+import { MarcadorComponent } from './componentes/marcador/marcador.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { PartidaComponent } from './componentes/partida/partida.component';
     PerfilComponent,
     HistorialComponent,
     PartidaComponent,
+    MarcadorComponent,
   ],
   imports: [
     BrowserModule,

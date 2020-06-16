@@ -1,1 +1,14 @@
-<p>chat works!</p>
+<div class="row" style="width: 300px;">
+    <div  style="overflow:scroll;width: 300px;height: 450px;" >
+        <div *ngFor="let message of chat">
+            <span>{{message.nick}} :{{message.message}} </span>
+        </div>
+    </div>
+</div>
+  <div class="row" >
+  <input #new_field type="text" value=""/>
+
+  <div class="row" >
+  <button (click)="send(new_field.value)">Enviar</button>
+    </div>
+</div>

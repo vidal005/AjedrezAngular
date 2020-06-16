@@ -1,4 +1,9 @@
-<table class="table table-hover table-dark">
+
+<div class="container m-20">
+<br>
+<br>
+  
+<table class="table table-hover table-dark m-20">
     <thead>
       <tr>
         <th scope="col">Id Partida</th>
@@ -13,9 +18,10 @@
         <th scope="row">{{room.partida.id}}</th>
         <td>{{ room.partida.jugadorBlancas.nick }}</td>
         <td *ngIf="room.partida.jugadorNegras == null; else elseNegras">Esperando oponente</td>
-        <td #elseNegras>{{ room.partida.jugadorNegras.nick }}</td>
+        <ng-template #elseNegras><td >{{ room.partida.jugadorNegras.nick }}</td></ng-template>
         <td *ngIf="room.partida.resultado == 'InGame'; else elseBlock">{{ room.partida.resultado }}</td>
-        <td #elseBlock><a class="nav-link" [routerLink]="['/partida', room.id]">Unirse a la partida</a></td>
+        <ng-template #elseBlock><td ><a class="nav-link" [routerLink]="['/partida', room.id]">Unirse a la partida</a></td></ng-template>
       </tr>
     </tbody>
   </table>
+</div>

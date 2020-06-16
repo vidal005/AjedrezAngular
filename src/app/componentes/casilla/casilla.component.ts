@@ -77,7 +77,7 @@ export class CasillaComponent implements OnInit {
           this.servicio.casillas[casilla].pieza.id = "q"+ this.servicio.casillas[casilla].pieza.id.substr(1);
           this.servicio.casillas[casilla].pieza.imagen = (this.servicio.casillas[casilla].pieza.color == "white")? this.servicio.imagenQueenWhite:this.servicio.imagenQueenBlack;
         }
-        this.serviciows.sendMessage(this.servicio.jugador+ev.dataTransfer.getData("posicion")+"-"+casilla);
+        this.serviciows.sendMessage(this.servicio.colorJugador+ev.dataTransfer.getData("posicion")+"-"+casilla);
       }
       this.servicio.setTurno((this.servicio.colorJugador == "white")? "black":"white");
       this.servicio.actualizarAmenazadasBlack();

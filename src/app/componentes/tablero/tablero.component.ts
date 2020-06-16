@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Casilla } from 'src/app/modelo/casilla';
 import { Pieza } from 'src/app/modelo/pieza';
 import { ServiceService } from 'src/app/servicio/service.service';
@@ -14,10 +14,12 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class TableroComponent implements OnInit {
 
   public casillas: Casilla[];
+  public offSTop = 18;
   public colorJugador : String = "ninguno";
   public turno : String = this.service.turno;
-  constructor(public service: ServiceService) {
+  constructor(public service: ServiceService,private elRef:ElementRef) {
     this.casillas = service.getCasillas();
+    this.colorJugador = this.service.colorJugador;
   }
   setColorJugador(color : string ){
     this.service.colorJugador = color;
@@ -25,10 +27,38 @@ export class TableroComponent implements OnInit {
     console.log(color);
   }
 
-  ngOnInit(): void {
+  onResize(event) {
+    
+    const isIEOrEdge = /msie\s|trident\/|edge\/|firefox\//i.test(window.navigator.userAgent)
+
+    if(isIEOrEdge){
+       this.offSTop = 18 + 15;
+    }
+    
+
     for (let index = 0; index < this.casillas.length; index++) {
-      this.casillas[index].posicionY = 26 + Math.floor(index / 8) * 53;
-      this.casillas[index].posicionX = 26 + (index % 8) * 53;
+      this.casillas[index].posicionY = this.elRef.nativeElement.offsetTop + this.offSTop +  Math.floor(index / 8) * 53;
+      this.casillas[index].posicionX = this.elRef.nativeElement.offsetLeft + 18 + (index % 8) * 53;
+    }
+  }
+
+  onClickWindow(ev){
+    for (let index = 0; index < this.casillas.length; index++) {
+      this.casillas[index].posicionY = this.elRef.nativeElement.offsetTop + this.offSTop +  Math.floor(index / 8) * 53;
+      this.casillas[index].posicionX = this.elRef.nativeElement.offsetLeft + 18 + (index % 8) * 53;
+    }
+  }
+
+  ngOnInit(): void {
+
+    const isIEOrEdge = /msie\s|trident\/|edge\/|firefox\//i.test(window.navigator.userAgent)
+
+    if(isIEOrEdge){
+       this.offSTop = 18 + 15;
+    }
+    for (let index = 0; index < this.casillas.length; index++) {
+      this.casillas[index].posicionY = this.elRef.nativeElement.offsetTop + this.offSTop +  Math.floor(index / 8) * 53;
+      this.casillas[index].posicionX = this.elRef.nativeElement.offsetLeft + 18 + (index % 8) * 53;
       this.casillas[index].posicion = index;
       if(this.casillas[index].pieza != null){
         this.casillas[index].pieza.id += index;

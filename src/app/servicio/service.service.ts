@@ -6,15 +6,16 @@ import { element } from 'protractor';
 import { Usuario } from '../modelo/usuario';
 import { RESTservicioService } from './restservicio.service';
 import { Partida } from '../modelo/partida';
+import { Message } from '../modelo/message';
 
 @Injectable({
   providedIn: "root"
 })
 export class ServiceService {
   
-  public chat : any[];
   public partida:Partida;
   public casillas: Casilla[];
+  public chat : Message[] = [];
   public jugador: Usuario ;
   public colorJugador = 'ninguno';
   public turno: String = "white";
@@ -284,6 +285,7 @@ export class ServiceService {
       )
     ];
 
+    //Colocando las casillas en el tablero
     for (let index = 0; index < this.casillas.length; index++) {
       this.casillas[index].posicionY = 25 + Math.floor(index / 8) * 53;
       this.casillas[index].posicionX = 25 + (index % 8) * 53;

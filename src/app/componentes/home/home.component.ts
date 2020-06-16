@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/modelo/usuario';
 import { RESTservicioService } from 'src/app/servicio/restservicio.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,13 +14,16 @@ export class HomeComponent implements OnInit {
     users = [];
 
     constructor(
-        public userService: RESTservicioService
+        public userService: RESTservicioService,private router: Router
     ) {
-        this.currentUser = this.userService.currentUser;
+        this.currentUser = JSON.parse(sessionStorage.getItem('usuario'));
     }
 
     ngOnInit() {
-        
+      
+        if(this.currentUser == null){
+          this.router.navigateByUrl('/login');
+        }
     }
 
 }
