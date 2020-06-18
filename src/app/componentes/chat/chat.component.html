@@ -1,14 +1,12 @@
-<div class="row" style="width: 300px;">
-    <div  style="overflow:scroll;width: 300px;height: 450px;" >
+<div class="row" style="width: 40vw;">
+    <div style="overflow-y:scroll;width: 100%;height: 450px;">
         <div *ngFor="let message of chat">
-            <span>{{message.nick}} :{{message.message}} </span>
+            <div *ngIf="servicio.jugador?.nick == message.nick"><span  style="color:'blue'">{{message.nick}} :</span><span>{{message.message}} </span></div>
+            <div *ngIf="servicio.jugador?.nick != message.nick"><span  style="color:'brown'">{{message.nick}} :</span><span>{{message.message}} </span></div>
         </div>
     </div>
 </div>
-  <div class="row" >
-  <input #new_field type="text" value=""/>
-
-  <div class="row" >
-  <button (click)="send(new_field.value)">Enviar</button>
-    </div>
+<div class="row">
+    <input class="col-9 form-control" #new_field type="text" value="" (keyup.enter)="send(new_field.value);new_field.value = ''"/>
+    <button class="col-3 btn btn-secondary" (click)="send(new_field.value);new_field.value = ''">Enviar</button>
 </div>

@@ -1,9 +1,12 @@
-
-<div>
-<div>Jugador Blancas: {{jugadorBlancas.nick}}</div>
-<div *ngIf="jugadorNegras != null">Jugador Negras: {{jugadorNegras.nick}}</div>
-<img *ngIf="colorJugador=='white'" src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/k.png" >
-<img *ngIf="colorJugador=='black'" src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/k.png" >
-<button type="button" onclick="rendirse()" class= "btn btn-info">Rendirse</button>
-<button type="button" onclick="ofrecerTablas()" class= "btn btn-info">Ofrecer Tablas</button>
+<div class="grid-container">
+    <div class="item2">
+        <div>Jugador Blancas: {{partida?.jugadorBlancas?.nick}}</div>
+        <div>Jugador Negras: {{partida?.jugadorNegras?.nick}}</div>
+    </div>
+    <img class="item" *ngIf="colorJugador=='white'"
+        src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/k.png">
+    <img class="item" *ngIf="colorJugador=='black'"
+        src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/k.png">
+    <div class="item3 row justify-content-between"><button type="button" onclick="rendirse()" class="btn btn-info col-5">Rendirse</button>
+    <button type="button" onclick="ofrecerTablas()" class="btn btn-info col-5">Ofrecer Tablas</button></div>
 </div>

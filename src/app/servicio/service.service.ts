@@ -1,22 +1,25 @@
 import { Injectable } from "@angular/core";
 import { Casilla } from "../modelo/casilla";
 import { Pieza } from "../modelo/pieza";
-import { of } from "rxjs";
+import { of, Subject } from "rxjs";
 import { element } from 'protractor';
 import { Usuario } from '../modelo/usuario';
 import { RESTservicioService } from './restservicio.service';
 import { Partida } from '../modelo/partida';
 import { Message } from '../modelo/message';
+import { Room } from '../modelo/room';
 
 @Injectable({
   providedIn: "root"
 })
 export class ServiceService {
-  
-  public partida:Partida;
+
+
+  public partida: Partida = new Partida();
+  public room: any = new Room();
   public casillas: Casilla[];
-  public chat : Message[] = [];
-  public jugador: Usuario ;
+  public chat: Message[] = [];
+  public jugador: Usuario;
   public colorJugador = 'ninguno';
   public turno: String = "white";
   public amenazadasBlack = new Set();
@@ -25,7 +28,7 @@ export class ServiceService {
   public imagenQueenBlack = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/q.png";
   public imagenQueenWhite = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/q.png";
 
-  constructor(private restServicio : RESTservicioService) {
+  constructor(private restServicio: RESTservicioService, ) {
     this.casillas = [
       new Casilla(
         new Pieza(
@@ -287,30 +290,77 @@ export class ServiceService {
 
     //Colocando las casillas en el tablero
     for (let index = 0; index < this.casillas.length; index++) {
-      this.casillas[index].posicionY = 25 + Math.floor(index / 8) * 53;
-      this.casillas[index].posicionX = 25 + (index % 8) * 53;
+      this.casillas[index].posicionY = 30 + Math.floor(index / 8) * 60;
+      this.casillas[index].posicionX = 30 + (index % 8) * 60;
       this.casillas[index].posicion = index;
     }
     this.jugador = restServicio.currentUser;
+    this.partida = new Partida();
+    this.partida.jugadorNegras = new Usuario();
+    this.partida.jugadorBlancas = new Usuario();
   }
+
+  // Observable string sources
+  private componentMethodCallSource = new Subject<any>();
   
-  getAmenazadasBlack(){
+  // Observable string streams
+  componentMethodCalled$ = this.componentMethodCallSource.asObservable();
+
+  // Service message commands
+  callComponentMethod() {
+    this.componentMethodCallSource.next();
+    
+  }
+
+
+
+  async listenWSCom(body: string) {
+    let com = JSON.parse(body)
+    let data: any;
+    //Si es un mensaje no enviado por nosotros
+    if (com.id != this.jugador.id) {
+      switch (com.message) {
+        case 'rendirse': {
+
+          break;
+        }
+
+        case 'enterGame': {
+          
+
+          this.room = await this.restServicio.getRoom(JSON.parse(sessionStorage.getItem('room')).id);
+          sessionStorage.setItem('room', JSON.stringify(this.room));
+          this.partida = this.room.partida;
+          this.callComponentMethod();
+          alert(this.partida.jugadorNegras.nick + " entró a la partida.Comienza el juego!");
+          break;
+        }
+
+        case 'ofrecerTablas': {
+
+          break;
+        }
+      }
+    }
+  }
+
+  getAmenazadasBlack() {
     return this.amenazadasBlack;
   }
 
-  getAmenazadasWhite(){
+  getAmenazadasWhite() {
     return this.amenazadasWhite;
   }
-  getAmenazas(color:string){
-    if(color == "white"){
-      return  this.getAmenazadasBlack()
+  getAmenazas(color: string) {
+    if (color == "white") {
+      return this.getAmenazadasBlack()
     }
-    else if(color == "black"){
+    else if (color == "black") {
       return this.getAmenazadasWhite()
     }
     else return null
   }
-  actualizarAmenazadasBlack(){
+  actualizarAmenazadasBlack() {
     let ocupadasNegras = this.getCasillasOcupadas("black");
     let amenazadas = new Set();
     ocupadasNegras.forEach(ocupada => {
@@ -320,15 +370,15 @@ export class ServiceService {
     });
     this.amenazadasBlack = amenazadas;
 
-    let reyWhite = this.casillas.find(element => element.pieza != null && element.pieza.id.substr(0,1) == "k" && element.pieza.color == "white");
-    if(amenazadas.has(reyWhite)){
+    let reyWhite = this.casillas.find(element => element.pieza != null && element.pieza.id.substr(0, 1) == "k" && element.pieza.color == "white");
+    if (amenazadas.has(reyWhite)) {
       this.casillas[reyWhite.posicion].resaltar = "red-take";
     }
-    else{
+    else {
       this.casillas[reyWhite.posicion].resaltar = "null";
     }
   }
-  actualizarAmenazadasWhite(){
+  actualizarAmenazadasWhite() {
     let ocupadasBlancas = this.getCasillasOcupadas("white");
     let amenazadas = new Set();
     ocupadasBlancas.forEach(ocupada => {
@@ -337,31 +387,31 @@ export class ServiceService {
       });
     });
     this.amenazadasWhite = amenazadas;
-    let reyBlack = this.casillas.find(element => element.pieza != null && element.pieza.id.substr(0,1) == "k" && element.pieza.color == "black");
+    let reyBlack = this.casillas.find(element => element.pieza != null && element.pieza.id.substr(0, 1) == "k" && element.pieza.color == "black");
 
-    if(amenazadas.has(reyBlack)){
+    if (amenazadas.has(reyBlack)) {
       this.casillas[reyBlack.posicion].resaltar = "red-take";
     }
-    else{
+    else {
       this.casillas[reyBlack.posicion].resaltar = "null";
     }
 
   }
 
-  getAmenazasRey(color:string){
+  getAmenazasRey(color: string) {
 
-    if(color == "white"){
+    if (color == "white") {
 
     }
 
   }
 
-  getAmenazadasPieza(casilla : Casilla){
+  getAmenazadasPieza(casilla: Casilla) {
     let posiciones = this.getPosicionesPosiblesSinMate(casilla.posicion)
     let amenazadas = new Set()
     posiciones.forEach(pos => {
-      if(casilla.pieza.id == "p"){
-        if(this.getXY(casilla.posicion)[1] != this.getXY(pos)[1]){
+      if (casilla.pieza.id == "p") {
+        if (this.getXY(casilla.posicion)[1] != this.getXY(pos)[1]) {
           amenazadas.add(this.casillas[pos])
         }
       }
@@ -373,11 +423,11 @@ export class ServiceService {
   }
 
 
-  getCasillasOcupadas(color:string){
+  getCasillasOcupadas(color: string) {
     return this.casillas.filter(casilla => casilla.pieza != null && casilla.pieza.color == color);
   }
 
-  getChat(){
+  getChat() {
     return this.chat;
   }
 
@@ -417,7 +467,7 @@ export class ServiceService {
     }
   }
 
-  
+
 
   getPosiblesPosiciones(numero: number) {
     let casilla = this.casillas[numero];
@@ -1153,13 +1203,12 @@ export class ServiceService {
         ) {
           if (this.casillas[this.getPosicion(nuevaPosicion)].pieza == null) {
             posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
-          } 
+          }
           else if (
             this.casillas[this.getPosicion(nuevaPosicion)].pieza.color !=
-            casilla.pieza.color)
-             {
+            casilla.pieza.color) {
             posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
-              }
+          }
         }
       }
     }
@@ -1203,24 +1252,24 @@ export class ServiceService {
       }
     }
 
-    let pieza = casilla.pieza; 
+    let pieza = casilla.pieza;
     let piezaComida = null;
     let posicionesMate = new Array();
-    let reyBlack = this.casillas.find(c => c.pieza != null && c.pieza.id.substr(0,1) == "k" && c.pieza.color == "black");
-    let reyWhite = this.casillas.find(c => c.pieza != null && c.pieza.id.substr(0,1) == "k" && c.pieza.color == "white");
+    let reyBlack = this.casillas.find(c => c.pieza != null && c.pieza.id.substr(0, 1) == "k" && c.pieza.color == "black");
+    let reyWhite = this.casillas.find(c => c.pieza != null && c.pieza.id.substr(0, 1) == "k" && c.pieza.color == "white");
     posiblesPosiciones.forEach(posicion => {
       piezaComida = this.casillas[posicion].pieza;
       this.casillas[posicion].pieza = pieza;
       casilla.pieza = null;
-      if(this.casillas[posicion].pieza.color == "white" && !(this.casillas[posicion].pieza.id.substr(0,1) == "k") ){
+      if (this.casillas[posicion].pieza.color == "white" && !(this.casillas[posicion].pieza.id.substr(0, 1) == "k")) {
         this.actualizarAmenazadasBlack();
-        if(this.amenazadasBlack.has(reyWhite)){
+        if (this.amenazadasBlack.has(reyWhite)) {
           posicionesMate.push(posicion);
         }
       }
-      else if (this.casillas[posicion].pieza.color == "black"   && !(this.casillas[posicion].pieza.id.substr(0,1) == "k")){
+      else if (this.casillas[posicion].pieza.color == "black" && !(this.casillas[posicion].pieza.id.substr(0, 1) == "k")) {
         this.actualizarAmenazadasWhite();
-        if(this.amenazadasWhite.has(reyBlack)){
+        if (this.amenazadasWhite.has(reyBlack)) {
           posicionesMate.push(posicion);
         }
       }
@@ -1229,8 +1278,8 @@ export class ServiceService {
     });
 
 
-    function clavado(pos){
-      if(posicionesMate.includes(pos)){
+    function clavado(pos) {
+      if (posicionesMate.includes(pos)) {
         return false;
       }
       else {
@@ -1976,13 +2025,12 @@ export class ServiceService {
         ) {
           if (this.casillas[this.getPosicion(nuevaPosicion)].pieza == null) {
             posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
-          } 
+          }
           else if (
             this.casillas[this.getPosicion(nuevaPosicion)].pieza.color !=
-            casilla.pieza.color)
-             {
+            casilla.pieza.color) {
             posiblesPosiciones.push(this.getPosicion(nuevaPosicion));
-              }
+          }
         }
       }
     }

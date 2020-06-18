@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
    // convenience getter for easy access to form fields
    get f() { return this.loginForm.controls; }
 
-   onSubmit() {
+   async onSubmit() {
        this.submitted = true;
 
        // reset alerts on submit
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
 
        this.loading = true;
 
-       this.service.login(this.f.nick.value, this.f.password.value)
+       (await this.service.login(this.f.nick.value, this.f.password.value))
            .subscribe(
                (data : Usuario) => {
                    this.router.navigate(['/home']);
