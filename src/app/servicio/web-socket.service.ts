@@ -2,9 +2,10 @@ import { Injectable, OnInit } from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import $ from 'jquery';
-import { ServiceService } from './service.service';
+
 import { Message } from '../modelo/message';
 import { ComWS } from '../modelo/dto/com-ws';
+import { ServiceService } from './service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,15 +24,15 @@ export class WebSocketService implements OnInit {
   private ultimoMsgChat : String;
   private ultimoMsgCom: String;
 
-  constructor(private servicio : ServiceService) {
+  constructor(public  servicio : ServiceService) {
     //this.iniciarConexionWebSocket();
   }
 
 
   desconectarServicios(){
-    this.stompClient.disconnect();
-    this.stompClientChat.disconnect();
-    this.stompClientCom.disconnect();
+    this.stompClient?.disconnect();
+    this.stompClientChat?.disconnect();
+    this.stompClientCom?.disconnect();
   }
 
   async iniciarConexionWebSocket(){
@@ -85,7 +86,7 @@ export class WebSocketService implements OnInit {
       that.stompClientCom.subscribe("/com/" + JSON.parse(sessionStorage.getItem('room')).id, (message) => {
         if(message.body) {
           if(message.body != that.ultimoMsgCom){
-            that.servicio.listenWSCom(message.body );
+            that.listenWSCom(message.body );
             that.ultimoMsgCom = message.body;
           }
           
@@ -106,6 +107,72 @@ export class WebSocketService implements OnInit {
 
   sendCom(com:ComWS){
     this.stompClientCom.send("/app/send/com/"+ JSON.parse(sessionStorage.getItem('room')).id , {},JSON.stringify(com));
+  }
+
+
+  async listenWSCom(body: string) {
+    let com = JSON.parse(body)
+    let data: any;
+    //Si es un mensaje no enviado por nosotros
+    if (com.id != this.servicio.jugador.id) {
+      switch (com.message) {
+        case 'rendirse': {
+
+          alert(""+ com.nick + " se ha rendido, VICTORIA!");
+          this.servicio.partida.resultado = (this.servicio.colorJugador == 'black')? this.servicio.partida.jugadorNegras.nick: this.servicio.partida.jugadorBlancas.nick;
+          this.servicio.finalizarPartida();
+          break;
+        }
+
+        case 'enterGame': {
+          
+
+          this.servicio.room = await this.servicio.restServicio.getRoom(JSON.parse(sessionStorage.getItem('room')).id);
+          sessionStorage.setItem('room', JSON.stringify(this.servicio.room));
+          this.servicio.partida = this.servicio.room.partida;
+          this.servicio.callComponentMethod();
+          alert(this.servicio.partida.jugadorNegras.nick + " entró a la partida.Comienza el juego!");
+          break;
+        }
+
+        case 'tablas': {
+          if(confirm(""+ com.nick + " ofrece tablas.Aceptar?")){
+            this.servicio.room.partida.resultado = 'tablas';
+            this.servicio.partida.resultado = 'tablas';
+            alert("Partida empatada")
+            this.servicio.finalizarPartida();
+
+            let tablasApccept = new ComWS();
+              tablasApccept.color = this.servicio.colorJugador;
+              tablasApccept.id = this.servicio.jugador.id;
+              tablasApccept.message = 'tablas aceptadas';
+              tablasApccept.nick = this.servicio.jugador.nick;
+
+              this.sendCom(tablasApccept);
+          }
+          else{
+            let tablasRechazadas = new ComWS();
+            tablasRechazadas.color = this.servicio.colorJugador;
+            tablasRechazadas.id = this.servicio.jugador.id;
+            tablasRechazadas.message = 'tablas rechazadas';
+            tablasRechazadas.nick = this.servicio.jugador.nick;
+
+              this.sendCom(tablasRechazadas);
+          }
+          break;
+        }
+
+        case 'tablas aceptadas' : {
+          alert("" + com.nick + " ha aceptado tablas. Partida empatada!")
+          this.servicio.finalizarPartida();
+
+        }
+
+        case 'tablas rechazadas' : {
+          alert("" + com.nick + " ha rechazado tu propuesta de tablas. La partida sigue!")
+        }
+      }
+    }
   }
 
 }

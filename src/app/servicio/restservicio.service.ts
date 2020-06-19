@@ -9,9 +9,18 @@ import { Room } from '../modelo/room';
 })
 export class RESTservicioService {
 
+  //por hacer
+  borrarRoom(room: any) {
+    
+  }
+
   constructor(public http: HttpClient ) {
 
     this.currentUser = JSON.parse(sessionStorage.getItem('usuario'));
+  }
+
+  async getPartidasUsuario(usuarioId : String) {
+    return this.http.get('http://localhost:8082/ajedrez/getPartidasUsuario/'+ usuarioId).toPromise();
   }
 
   async actualizarPartida(partida: Partida) {

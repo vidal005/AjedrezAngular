@@ -17,6 +17,9 @@ export class CasillaComponent implements OnInit {
   }
 
   onClickMe(posicion:number){
+    this.servicio.actualizarAmenazadasBlack();
+    this.servicio.actualizarAmenazadasWhite();
+
     var movimientos = this.servicio.getPosiblesPosiciones(posicion);
     var casillas = this.servicio.casillas;
     casillas.forEach(element => {
@@ -37,6 +40,9 @@ export class CasillaComponent implements OnInit {
   }
 
   onDragStart(ev, posicion){
+
+    this.servicio.actualizarAmenazadasBlack();
+    this.servicio.actualizarAmenazadasWhite();
     var casillas = this.servicio.casillas;
     casillas.forEach(element => {
       if(element.resaltar != "red-take"){
@@ -60,24 +66,29 @@ export class CasillaComponent implements OnInit {
 
   onDrop(ev){
     ev.preventDefault();
+
+    this.servicio.actualizarAmenazadasBlack();
+    this.servicio.actualizarAmenazadasWhite();
     let movimientos: number[];
-    if(this.servicio.casillas[ev.dataTransfer.getData("posicion")] != null
-      && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.colorJugador
-      && this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza.color == this.servicio.getTurno() ){
+    let posicionInicial = ev.dataTransfer.getData("posicion");
+    let posicionFinal = ev.target.parentElement.id;
+    if(this.servicio.casillas[posicionInicial] != null
+      && this.servicio.casillas[posicionInicial].pieza.color == this.servicio.colorJugador
+      && this.servicio.casillas[posicionInicial].pieza.color == this.servicio.getTurno() 
+      && this.servicio.casillas[posicionFinal] != this.servicio.casillas[posicionInicial]){
       movimientos = this.servicio.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
 
-      let casilla = movimientos.find(element => element == ev.target.parentElement.id);
-
-      if(casilla){
-        this.servicio.casillas[casilla].pieza = this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza;
-        this.servicio.casillas[ev.dataTransfer.getData("posicion")].pieza = null;
-        if((this.servicio.getXY(casilla)[0] == 0 || this.servicio.getXY(casilla)[0] == 7) 
-        && this.servicio.casillas[casilla].pieza.id.substr(0,1) == "p")
+      //si es un posible movimiento y no es la misma casilla
+      if(posicionFinal ){
+        this.servicio.casillas[posicionFinal].pieza = this.servicio.casillas[posicionInicial].pieza;
+        this.servicio.casillas[posicionInicial].pieza = null;
+        if((this.servicio.getXY(posicionFinal)[0] == 0 || this.servicio.getXY(posicionFinal)[0] == 7) 
+        && this.servicio.casillas[posicionFinal].pieza.id.substr(0,1) == "p")
         {
-          this.servicio.casillas[casilla].pieza.id = "q"+ this.servicio.casillas[casilla].pieza.id.substr(1);
-          this.servicio.casillas[casilla].pieza.imagen = (this.servicio.casillas[casilla].pieza.color == "white")? this.servicio.imagenQueenWhite:this.servicio.imagenQueenBlack;
+          this.servicio.casillas[posicionFinal].pieza.id = "q"+ this.servicio.casillas[posicionFinal].pieza.id.substr(1);
+          this.servicio.casillas[posicionFinal].pieza.imagen = (this.servicio.casillas[posicionFinal].pieza.color == "white")? this.servicio.imagenQueenWhite:this.servicio.imagenQueenBlack;
         }
-        this.serviciows.sendMessage(this.servicio.colorJugador+ev.dataTransfer.getData("posicion")+"-"+casilla);
+        this.serviciows.sendMessage(this.servicio.colorJugador+ev.dataTransfer.getData("posicion")+"-"+posicionFinal);
       }
       this.servicio.setTurno((this.servicio.colorJugador == "white")? "black":"white");
       this.servicio.actualizarAmenazadasBlack();

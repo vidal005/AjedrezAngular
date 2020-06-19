@@ -3,6 +3,9 @@ import { RESTservicioService } from 'src/app/servicio/restservicio.service';
 import { ServiceService } from 'src/app/servicio/service.service';
 import { Usuario } from 'src/app/modelo/usuario';
 import { Partida } from 'src/app/modelo/partida';
+import { WebSocketService } from 'src/app/servicio/web-socket.service';
+import { ComWS } from 'src/app/modelo/dto/com-ws';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-marcador',
@@ -16,7 +19,8 @@ export class MarcadorComponent implements OnInit {
   //public primeraVez: string = '..........';
   
 
-  constructor(public servicioREST: RESTservicioService, public servicioAjedrez: ServiceService,public cd: ChangeDetectorRef) {
+  constructor(public servicioREST: RESTservicioService, public servicioAjedrez: ServiceService,
+    private servicoWS : WebSocketService, public cd: ChangeDetectorRef, private router : Router) {
 
     this.partida = this.servicioAjedrez.partida;
 
@@ -53,12 +57,34 @@ export class MarcadorComponent implements OnInit {
   }
 
 
-  async rendirse() {
-    this.servicioAjedrez.partida.resultado = (this.servicioAjedrez.colorJugador == 'white') ? 'black' : 'white';
+  public async rendirse() {
+    this.servicioAjedrez.partida.resultado = (this.servicioAjedrez.jugador.id == this.servicioAjedrez.partida.jugadorBlancas.id)?
+    this.servicioAjedrez.partida.jugadorNegras.id : this.servicioAjedrez.partida.jugadorBlancas.id;
     await this.servicioREST.actualizarPartida(this.servicioAjedrez.partida);
+    let comRendirse = new ComWS();
+    comRendirse.id = this.servicioAjedrez.jugador.id;
+    comRendirse.message = 'rendirse';
+    comRendirse.nick = this.servicioAjedrez.jugador.nick;
+    comRendirse.color = this.servicioAjedrez.colorJugador;
+
+    this.servicoWS.sendCom(comRendirse);
+
+    alert('Has perdio :( ');
+
+    this.servicioAjedrez.finalizarPartida();
   }
 
-  async ofreceerTablas() {
+  public async ofrecerTablas() {
+    let comTablas = new ComWS();
+      comTablas.id = this.servicioAjedrez.jugador.id;
+      comTablas.message = 'tablas';
+      comTablas.nick = this.servicioAjedrez.jugador.nick;
+      comTablas.color = this.servicioAjedrez.colorJugador;
+      
+      this.servicoWS.sendCom(comTablas);
+
+      alert('Esperando respuesta de ' + (this.servicioAjedrez.jugador.id == this.servicioAjedrez.partida.jugadorBlancas.id)?
+      this.servicioAjedrez.partida.jugadorNegras.nick : this.servicioAjedrez.partida.jugadorBlancas.nick);
 
   }
 

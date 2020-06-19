@@ -4,6 +4,7 @@ import { LoginComponent } from './componentes/login/login.component';
 import { HomeComponent } from './componentes/home/home.component';
 import { RegisterComponent } from './componentes/register/register.component';
 import { PartidaComponent } from './componentes/partida/partida.component';
+import { HistorialComponent } from './componentes/historial/historial.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path:'register', component:RegisterComponent},
   {path:'partida/:id', component:PartidaComponent},
   {path:'partida', component:PartidaComponent},
+  {path:'historial', component:HistorialComponent},
   {path:'**', redirectTo:'login'}
 ];
 

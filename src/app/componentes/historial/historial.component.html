@@ -1,1 +1,27 @@
-<p>historial works!</p>
+<app-navbar></app-navbar>
+
+
+<table class="table table-hover table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col"> Jugador Blancas</th>
+      <th scope="col"> Jugador Negras</th>
+      <th scope="col"> Resultado </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let partida of partidasUsuario">
+      <th scope="row">{{partida.id}}</th>
+      <td>{{partida.jugadorBlancas.nick}}</td>
+      <td>{{partida.jugadorNegras.nick}}</td>
+      <td>
+      <div *ngIf="partida.resultado == servicioREST.currentUser.nick ; else noVictoria">Victoria</div>
+      <ng-template #noVictoria>
+        <div *ngIf="partida.resultado == 'tablas'; else elseBlock"> Empate</div>
+        <ng-template #elseBlock> Derrota </ng-template>
+      </ng-template>
+    </td>
+    </tr>
+  </tbody>
+</table>

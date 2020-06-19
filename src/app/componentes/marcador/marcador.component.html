@@ -3,10 +3,13 @@
         <div>Jugador Blancas: {{partida?.jugadorBlancas?.nick}}</div>
         <div>Jugador Negras: {{partida?.jugadorNegras?.nick}}</div>
     </div>
+    <img *ngIf="colorJugador == servicioAjedrez.turno" class="resaltar"
+        src="https://assets.chess24.com/assets/804b8435ad5a94accc3de0729b3af3c1/images/chess/themes/pieces/chess24/highlight/green-select.png"
+        style="position: absolute;">
     <img class="item" *ngIf="colorJugador=='white'"
         src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/k.png">
     <img class="item" *ngIf="colorJugador=='black'"
         src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/k.png">
-    <div class="item3 row justify-content-between"><button type="button" onclick="rendirse()" class="btn btn-info col-5">Rendirse</button>
-    <button type="button" onclick="ofrecerTablas()" class="btn btn-info col-5">Ofrecer Tablas</button></div>
+    <div class="item3 row justify-content-between"><button type="button" (click)="rendirse()" class="btn btn-info col-5">Rendirse</button>
+    <button type="button" (click)="ofrecerTablas()" class="btn btn-info col-5">Ofrecer Tablas</button></div>
 </div>

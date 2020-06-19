@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Host } from "@angular/core";
 import { Casilla } from "../modelo/casilla";
 import { Pieza } from "../modelo/pieza";
 import { of, Subject } from "rxjs";
@@ -8,6 +8,8 @@ import { RESTservicioService } from './restservicio.service';
 import { Partida } from '../modelo/partida';
 import { Message } from '../modelo/message';
 import { Room } from '../modelo/room';
+import { Router } from '@angular/router';
+import { WebSocketService } from './web-socket.service';
 
 @Injectable({
   providedIn: "root"
@@ -28,265 +30,8 @@ export class ServiceService {
   public imagenQueenBlack = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/q.png";
   public imagenQueenWhite = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/q.png";
 
-  constructor(private restServicio: RESTservicioService, ) {
-    this.casillas = [
-      new Casilla(
-        new Pieza(
-          "black",
-          "r",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "n",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/n.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "b",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/b.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "q",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/q.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "k",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/k.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "b",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/b.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "n",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/n.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "r",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "black",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
-        )
-      ),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(),
-      new Casilla(
-        new Pieza(
-          "white",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "p",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "r",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/r.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "n",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/n.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "b",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/b.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "q",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/q.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "k",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/k.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "b",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/b.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "n",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/n.png"
-        )
-      ),
-      new Casilla(
-        new Pieza(
-          "white",
-          "r",
-          "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/r.png"
-        )
-      )
-    ];
+  constructor(public  restServicio: RESTservicioService, private router: Router) {
+    this.casillas = this.getMatrizPartidaNueva();
 
     //Colocando las casillas en el tablero
     for (let index = 0; index < this.casillas.length; index++) {
@@ -313,8 +58,291 @@ export class ServiceService {
   }
 
 
+getMatrizPartidaNueva(): Casilla[]{
+  return  [
+    new Casilla(
+      new Pieza(
+        "black",
+        "r",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "n",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/n.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "b",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/b.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "q",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/q.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "k",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/k.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "b",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/b.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "n",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/n.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "r",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/r.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "black",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/p.png"
+      )
+    ),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(),
+    new Casilla(
+      new Pieza(
+        "white",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "p",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/p.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "r",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/r.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "n",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/n.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "b",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/b.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "q",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/q.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "k",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/k.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "b",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/b.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "n",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/n.png"
+      )
+    ),
+    new Casilla(
+      new Pieza(
+        "white",
+        "r",
+        "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/r.png"
+      )
+    )
+  ]
+}
 
-  async listenWSCom(body: string) {
+finalizarPartida(){
+  this.colorJugador = "ninguno";
+          this.jugador.estado = "online";
+          this.partida.jugadorBlancas.estado = "online";
+          this.partida.jugadorNegras.estado = "online";
+          this.restServicio.currentUser.estado = "online";
+          this.restServicio.actualizarPartida(this.partida);
+          this.restServicio.borrarRoom(this.room);
+          this.room = new Room();
+          this.partida = new Partida();
+          this.casillas = this.getMatrizPartidaNueva();
+          this.chat = [];
+          this.turno = "white"; 
+          sessionStorage.setItem('room',null);
+          sessionStorage.setItem('usuario', JSON.stringify(this.jugador));
+          this.restServicio.actualizarUsuario(this.jugador);
+          
+          this.router.navigateByUrl('/home/');
+}
+
+
+// Reaccionar a las comunicaciones recibidas
+// metodo traspasado a WebSocketservice
+  /* async listenWSCom(body: string) {
     let com = JSON.parse(body)
     let data: any;
     //Si es un mensaje no enviado por nosotros
@@ -322,6 +350,9 @@ export class ServiceService {
       switch (com.message) {
         case 'rendirse': {
 
+          alert(""+ com.nick + " se ha rendido, VICTORIA!");
+          this.partida.resultado = (this.colorJugador == 'black')? this.partida.jugadorBlancas.nick: this.partida.jugadorNegras.nick;
+          this.finalizarPartida();
           break;
         }
 
@@ -336,13 +367,21 @@ export class ServiceService {
           break;
         }
 
-        case 'ofrecerTablas': {
+        case 'tablas': {
+          if(confirm(""+ com.nick + " ofrece tablas.Aceptar?")){
+            this.room.partida.resultado = 'tablas';
+            this.partida.resultado = 'tablas';
+            alert("Partida empatada")
+            this.finalizarPartida()
+          }
+          else{
 
+          }
           break;
         }
       }
     }
-  }
+  }*/
 
   getAmenazadasBlack() {
     return this.amenazadasBlack;
@@ -1252,22 +1291,23 @@ export class ServiceService {
       }
     }
 
-    let pieza = casilla.pieza;
-    let piezaComida = null;
+    //clonar pieza
+    let pieza : any =  JSON.parse(JSON.stringify(casilla.pieza));
+    let piezaComida : any = null;
     let posicionesMate = new Array();
     let reyBlack = this.casillas.find(c => c.pieza != null && c.pieza.id.substr(0, 1) == "k" && c.pieza.color == "black");
     let reyWhite = this.casillas.find(c => c.pieza != null && c.pieza.id.substr(0, 1) == "k" && c.pieza.color == "white");
     posiblesPosiciones.forEach(posicion => {
-      piezaComida = this.casillas[posicion].pieza;
+      piezaComida =  (this.casillas[posicion].pieza)?JSON.parse(JSON.stringify(this.casillas[posicion].pieza)): null;
       this.casillas[posicion].pieza = pieza;
       casilla.pieza = null;
-      if (this.casillas[posicion].pieza.color == "white" && !(this.casillas[posicion].pieza.id.substr(0, 1) == "k")) {
+      if (this.casillas[posicion].pieza.color == "white" ) {
         this.actualizarAmenazadasBlack();
         if (this.amenazadasBlack.has(reyWhite)) {
           posicionesMate.push(posicion);
         }
       }
-      else if (this.casillas[posicion].pieza.color == "black" && !(this.casillas[posicion].pieza.id.substr(0, 1) == "k")) {
+      else if (this.casillas[posicion].pieza.color == "black") {
         this.actualizarAmenazadasWhite();
         if (this.amenazadasWhite.has(reyBlack)) {
           posicionesMate.push(posicion);
