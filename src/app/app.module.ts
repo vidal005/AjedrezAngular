@@ -26,6 +26,8 @@ import { HistorialComponent } from './componentes/historial/historial.component'
 import { PartidaComponent } from './componentes/partida/partida.component';
 import { MarcadorComponent } from './componentes/marcador/marcador.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReplayComponent } from './componentes/replay/replay.component';
+import {CountdownModule, CountdownGlobalConfig} from 'ngx-countdown';
 
 
 
@@ -73,6 +75,17 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';*/
 
 
+
+function countdownConfigFactory(): CountdownGlobalConfig {
+
+  let config = new CountdownGlobalConfig('en-US');
+      config.format = 'mm:ss';
+      config.leftTime = 600;
+      config.demand = true;
+
+  return config ;
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -91,6 +104,8 @@ import {MatTreeModule} from '@angular/material/tree';*/
     HistorialComponent,
     PartidaComponent,
     MarcadorComponent,
+    ReplayComponent
+    
 /*
     A11yModule,
     ClipboardModule,
@@ -144,8 +159,11 @@ import {MatTreeModule} from '@angular/material/tree';*/
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
+    CountdownModule
   ],
-  providers: [],
+  providers: [
+    { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

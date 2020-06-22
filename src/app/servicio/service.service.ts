@@ -10,13 +10,14 @@ import { Message } from '../modelo/message';
 import { Room } from '../modelo/room';
 import { Router } from '@angular/router';
 import { WebSocketService } from './web-socket.service';
+import { nextTick } from 'process';
 
 @Injectable({
   providedIn: "root"
 })
 export class ServiceService {
 
-
+  public jaqueMate = "";
   public partida: Partida = new Partida();
   public room: any = new Room();
   public casillas: Casilla[];
@@ -29,31 +30,66 @@ export class ServiceService {
 
   public imagenQueenBlack = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/black/q.png";
   public imagenQueenWhite = "https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/pieces/chess24/white/q.png";
+  jaque: string;
 
   constructor(public  restServicio: RESTservicioService, private router: Router) {
     this.casillas = this.getMatrizPartidaNueva();
 
     //Colocando las casillas en el tablero
-    for (let index = 0; index < this.casillas.length; index++) {
-      this.casillas[index].posicionY = 30 + Math.floor(index / 8) * 60;
-      this.casillas[index].posicionX = 30 + (index % 8) * 60;
-      this.casillas[index].posicion = index;
-    }
+    this.posicionarCasillasMatriz();
+
     this.jugador = restServicio.currentUser;
     this.partida = new Partida();
     this.partida.jugadorNegras = new Usuario();
     this.partida.jugadorBlancas = new Usuario();
   }
 
+
+  posicionarCasillasMatriz(){
+    for (let index = 0; index < this.casillas.length; index++) {
+      this.casillas[index].posicionY = 25 + Math.floor(index / 8) * 66.3;
+      this.casillas[index].posicionX = 25 + (index % 8) * 66.3;
+      this.casillas[index].posicion = index;
+    }
+  }
+ 
+ //Para llamar a un metodo de Marcador
   // Observable string sources
   private componentMethodCallSource = new Subject<any>();
   
-  // Observable string streams
+  // Observable string streams, Componente Marcador subscrito a este observable
   componentMethodCalled$ = this.componentMethodCallSource.asObservable();
 
   // Service message commands
   callComponentMethod() {
     this.componentMethodCallSource.next();
+    
+  }
+
+
+
+  //Para llamar a un metodo de Partida
+  // Observable string sources
+  private partidaPauseSource= new Subject<any>();
+  private partidaResumeSource= new Subject<any>();
+  private partidaBeginSource= new Subject<any>();
+  
+  // Observable string streams, Componente Paritda subscrito a este observable
+  PartidaMethodPauseTimer$ = this.partidaPauseSource.asObservable();
+  PartidaMethodResumeTimer$ = this.partidaResumeSource.asObservable();
+  PartidaMethodBeginTimer$ = this.partidaBeginSource.asObservable();
+
+  // Service message commands
+  callPartidaPauseTimer() {
+    this.partidaPauseSource.next();
+    
+  }
+  callPartidaResumeTimer() {
+    this.partidaResumeSource.next();
+    
+  }
+  callPartidaBeginTimer() {
+    this.partidaBeginSource.next();
     
   }
 
@@ -324,12 +360,16 @@ finalizarPartida(){
           this.jugador.estado = "online";
           this.partida.jugadorBlancas.estado = "online";
           this.partida.jugadorNegras.estado = "online";
+          
           this.restServicio.currentUser.estado = "online";
           this.restServicio.actualizarPartida(this.partida);
           this.restServicio.borrarRoom(this.room);
           this.room = new Room();
           this.partida = new Partida();
+          this.partida.jugadorNegras = new Usuario();
+          this.partida.jugadorBlancas = new Usuario();
           this.casillas = this.getMatrizPartidaNueva();
+          this.posicionarCasillasMatriz();
           this.chat = [];
           this.turno = "white"; 
           sessionStorage.setItem('room',null);
@@ -341,7 +381,7 @@ finalizarPartida(){
 
 
 // Reaccionar a las comunicaciones recibidas
-// metodo traspasado a WebSocketservice
+// mètodo traspasado a WebSocketservice
   /* async listenWSCom(body: string) {
     let com = JSON.parse(body)
     let data: any;
@@ -400,41 +440,92 @@ finalizarPartida(){
     else return null
   }
   actualizarAmenazadasBlack() {
+    //let movimientosPosibles = [];
     let ocupadasNegras = this.getCasillasOcupadas("black");
     let amenazadas = new Set();
     ocupadasNegras.forEach(ocupada => {
       this.getAmenazadasPieza(ocupada).forEach(amenazada => {
         amenazadas.add(amenazada)
       });
+      
+      
     });
     this.amenazadasBlack = amenazadas;
 
     let reyWhite = this.casillas.find(element => element.pieza != null && element.pieza.id.substr(0, 1) == "k" && element.pieza.color == "white");
-    if (amenazadas.has(reyWhite)) {
+    if (amenazadas.has(reyWhite) ) {
       this.casillas[reyWhite.posicion].resaltar = "red-take";
+      this.jaque = 'white';
     }
     else {
       this.casillas[reyWhite.posicion].resaltar = "null";
     }
   }
   actualizarAmenazadasWhite() {
+    //let movimientosPosibles = [];
     let ocupadasBlancas = this.getCasillasOcupadas("white");
     let amenazadas = new Set();
     ocupadasBlancas.forEach(ocupada => {
       this.getAmenazadasPieza(ocupada).forEach(amenazada => {
         amenazadas.add(amenazada)
       });
+    
     });
     this.amenazadasWhite = amenazadas;
     let reyBlack = this.casillas.find(element => element.pieza != null && element.pieza.id.substr(0, 1) == "k" && element.pieza.color == "black");
 
     if (amenazadas.has(reyBlack)) {
+      //if( movimientosPosibles.length == 0 ){
+        //jaque al rey negro
+       
+        //this.jaqueMate = "white";
+        //alert("Jaque Mate! Gana " + this.partida.jugadorBlancas.nick);
+       // this.finalizarPartida();
+      //}
+      this.jaque = 'black';
       this.casillas[reyBlack.posicion].resaltar = "red-take";
     }
     else {
       this.casillas[reyBlack.posicion].resaltar = "null";
     }
 
+  }
+
+  comprobarJaqueMate(): boolean{
+    if(this.jaque == 'white'){
+      let posiblesMovimientos = 0;
+      this.getCasillasOcupadas("white").forEach(casilla => {
+       if(posiblesMovimientos == 0){
+        posiblesMovimientos += (this.getPosiblesPosiciones(casilla.posicion)).length;
+       }
+      });
+
+      if(posiblesMovimientos == 0){
+        //jaque mate , gana Negro
+        this.partida.resultado = this.partida.jugadorNegras.nick;
+        alert("Jaque Mate! Gana " + this.partida.jugadorNegras.nick);
+        this.finalizarPartida();
+        return true;
+      }
+    }
+    else if(this.jaque == 'black'){
+      let posiblesMovimientos = 0;
+      this.getCasillasOcupadas("black").forEach(casilla => {
+       if(posiblesMovimientos == 0){
+        posiblesMovimientos += (this.getPosiblesPosiciones(casilla.posicion)).length;
+       }
+      });
+
+      if(posiblesMovimientos == 0){
+        //jaque mate , gana Blanco
+        this.partida.resultado = this.partida.jugadorBlancas.nick;
+        alert("Jaque Mate! Gana " + this.partida.jugadorBlancas.nick);
+        this.finalizarPartida();
+        return true;
+      }
+      
+    }
+    return false;
   }
 
   getAmenazasRey(color: string) {
@@ -491,7 +582,11 @@ finalizarPartida(){
     let iniPos = WSmessage.substr(5, WSmessage.indexOf("-") - 5);
     let finalPos = WSmessage.substr(WSmessage.indexOf("-") + 1);
 
+
+    this.partida.movimientos += "" + iniPos+"-"+finalPos+',';
     if (color != this.colorJugador) {
+
+
       let pieza = this.casillas[iniPos].pieza;
       if (this.casillas[finalPos].pieza != null) {
         this.casillas[finalPos].pieza = null;
@@ -503,6 +598,8 @@ finalizarPartida(){
 
       this.actualizarAmenazadasWhite()
       this.turno = this.colorJugador;
+      
+      this.callPartidaResumeTimer();
     }
   }
 
@@ -1326,6 +1423,20 @@ finalizarPartida(){
         return true;
       }
     }
+
+    /*if(posiblesPosiciones.filter(clavado).length == 0){
+      if(this.colorJugador == 'black' && this.turno == 'black' && this.amenazadasWhite.has(reyBlack)){
+        //jaque mate, gana white
+        this.partida.resultado = this.partida.jugadorBlancas.nick;
+        
+      }
+      else if(this.colorJugador == 'white' && this.turno ==  'white' && this.amenazadasBlack.has(reyWhite)){
+        //jaque mate, gana black
+        this.partida.resultado = this.partida.jugadorNegras.nick;
+        
+      }
+    }*/
+
     return posiblesPosiciones.filter(clavado);
   }
 
@@ -2128,32 +2239,34 @@ finalizarPartida(){
     return XY[0] * 8 + XY[1];
   }
 
+
+  //[0,0] -> a0
+  //[0,1] ->
   XYtoNLetra(xy: number[]) {
     switch (xy[1]) {
       case 0:
-        return xy[0] + "a";
+        return "a" + (8 - xy[0]);
         break;
       case 1:
-        return xy[0] + "b";
+        return "b" + (8 - xy[0]);
         break;
-
       case 2:
-        return xy[0] + "c";
+        return "c" + (8 - xy[0]);
         break;
       case 3:
-        return xy[0] + "d";
+        return "d" + (8 - xy[0]);
         break;
       case 4:
-        return xy[0] + "e";
+        return "e" + (8 - xy[0]);
         break;
       case 5:
-        return xy[0] + "f";
+        return "f" + (8 - xy[0]);
         break;
       case 6:
-        return xy[0] + "g";
+        return "g" + (8 - xy[0]);
         break;
       case 7:
-        return xy[0] + "h";
+        return "h" + (8 - xy[0]);
         break;
       default:
         break;

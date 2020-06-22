@@ -1,12 +1,12 @@
-<div  style="height: 53px; width: 53px;position:absolute;" 
+<div  style="height: 60px; width: 60px;position:absolute;" 
     (drop) = "onDrop($event)" (dragover)="onDragOver($event)"
-    [style.top]="casilla.posicionY+'px'" id="{{casilla.posicion}}"
-    [style.left]="casilla.posicionX+'px'" (click)="onClickMe(casilla.posicion)" class="_{{casilla.posicion}} casilla">
+     id="{{casilla.posicion}}"
+     (click)="onClickMe(casilla.posicion)" class="_{{casilla.posicion}} casilla">
     <span style="position: absolute;top: auto;left: auto;">{{casilla.posicion}}</span>
     <img class="resaltar"
         src="https://assets.chess24.com/assets/804b8435ad5a94accc3de0729b3af3c1/images/chess/themes/pieces/chess24/highlight/{{casilla.resaltar}}.png"
-        style="position: absolute;height: 53px; width: 53px">
+        style="position: absolute;height: 60px; width: 60px">
     <img *ngIf="casilla.pieza" src="{{casilla.pieza.imagen}}" id="{{casilla.pieza.id}}"
-        style="position: absolute;height: 53px; width: 53px" class="pieza"
+        style="position: absolute;height: 60px; width: 60px" class="pieza"
         (draggable)="true" (dragstart) = "onDragStart($event, casilla.posicion)">
 </div>

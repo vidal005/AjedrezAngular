@@ -45,7 +45,11 @@ export class WebSocketService implements OnInit {
       that.stompClient.subscribe("/move/" + JSON.parse(sessionStorage.getItem('room')).id, (message) => {
         if(message.body) {
           if(message.body != that.ultimoMsgMove){
+            
             that.servicio.hacerMovimiento(message.body);
+            if(that.servicio.jaque == "white" || that.servicio.jaque == "black"){
+              that.servicio.comprobarJaqueMate();
+            }
             that.ultimoMsgMove = message.body;
           }
           
@@ -98,6 +102,7 @@ export class WebSocketService implements OnInit {
   }
 
   sendMessage(message){
+    this.servicio.callPartidaPauseTimer();
     this.stompClient.send("/app/send/move/"+ JSON.parse(sessionStorage.getItem('room')).id , {}, message);
   }
   
@@ -132,16 +137,16 @@ export class WebSocketService implements OnInit {
           this.servicio.partida = this.servicio.room.partida;
           this.servicio.callComponentMethod();
           alert(this.servicio.partida.jugadorNegras.nick + " entró a la partida.Comienza el juego!");
+          this.servicio.callPartidaBeginTimer();
           break;
         }
 
         case 'tablas': {
-          if(confirm(""+ com.nick + " ofrece tablas.Aceptar?")){
+          if(window.confirm(""+ com.nick + " ofrece tablas.Aceptar?")){
             this.servicio.room.partida.resultado = 'tablas';
             this.servicio.partida.resultado = 'tablas';
-            alert("Partida empatada")
-            this.servicio.finalizarPartida();
-
+            alert("Partida empatada");
+          
             let tablasApccept = new ComWS();
               tablasApccept.color = this.servicio.colorJugador;
               tablasApccept.id = this.servicio.jugador.id;
@@ -149,6 +154,7 @@ export class WebSocketService implements OnInit {
               tablasApccept.nick = this.servicio.jugador.nick;
 
               this.sendCom(tablasApccept);
+              this.servicio.finalizarPartida();
           }
           else{
             let tablasRechazadas = new ComWS();
@@ -165,12 +171,23 @@ export class WebSocketService implements OnInit {
         case 'tablas aceptadas' : {
           alert("" + com.nick + " ha aceptado tablas. Partida empatada!")
           this.servicio.finalizarPartida();
-
+          break;
         }
 
         case 'tablas rechazadas' : {
           alert("" + com.nick + " ha rechazado tu propuesta de tablas. La partida sigue!")
+          break;
         }
+
+        case 'tiempo agotado' : {
+          this.servicio.partida.resultado = this.servicio.jugador.nick;
+          this.servicio.room.partida.resultado = this.servicio.jugador.nick;
+          this.servicio.finalizarPartida();
+        
+          alert("" + com.nick + " ha agotado el tiempo. Victoria!");
+          break;
+        }
+        
       }
     }
   }

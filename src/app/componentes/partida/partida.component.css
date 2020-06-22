@@ -2,5 +2,27 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    background-color: rgb(15, 64, 109);
   }
   
+  .timer {
+    font-size: 80px;
+    
+    margin: 40px;
+    border: darkslategray;
+    
+  }
+  
+
+  .marcador-countdown {
+    justify-content: center;
+  }
+
+  .container-timer{
+    text-align: center;
+    
+  }
+
+.chat{
+  background-color: rgb(0, 26, 51);
+}

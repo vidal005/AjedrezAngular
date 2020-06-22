@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { RESTservicioService } from 'src/app/servicio/restservicio.service';
 import { Usuario } from 'src/app/modelo/usuario';
 import { Partida } from 'src/app/modelo/partida';
@@ -8,6 +8,11 @@ import { Room } from 'src/app/modelo/room';
 import { JsonPipe } from '@angular/common';
 import { WebSocketService } from 'src/app/servicio/web-socket.service';
 import { ComWS } from 'src/app/modelo/dto/com-ws';
+import { CountdownComponent } from 'ngx-countdown/countdown.component';
+import { CountdownGlobalConfig } from 'ngx-countdown/countdown.config';
+
+
+
 
 @Component({
   selector: 'app-partida',
@@ -16,7 +21,8 @@ import { ComWS } from 'src/app/modelo/dto/com-ws';
 })
 export class PartidaComponent implements OnInit {
 
-
+  @ViewChild('cd', { static: false }) private countdown: CountdownComponent;
+  
   
   public partida : Partida = this.servicioAjedrez.partida;
   public room : Room = this.servicioAjedrez.room;
@@ -29,10 +35,24 @@ export class PartidaComponent implements OnInit {
   constructor(public servicio:RESTservicioService, public servicioAjedrez:ServiceService,private ruta:ActivatedRoute,
      private route : Router,public zone:NgZone,public servicioWS:WebSocketService, private cd:ChangeDetectorRef) {
 
+      
 
-      this.servicioAjedrez.componentMethodCalled$.subscribe(
+      
+      this.servicioAjedrez.PartidaMethodResumeTimer$.subscribe(
         () => {
-          this.detectarCambios();
+          this.countdown.resume();
+        }
+      );
+
+      this.servicioAjedrez.PartidaMethodPauseTimer$.subscribe(
+        () => {
+          this.countdown.pause();
+        }
+      );
+
+      this.servicioAjedrez.PartidaMethodBeginTimer$.subscribe(
+        () => {
+          this.countdown.begin();
         }
       );
 
@@ -61,6 +81,7 @@ export class PartidaComponent implements OnInit {
 
   }
 
+
   detectarCambios() {
     this.partida = this.servicioAjedrez.partida;
     this.cd.detectChanges();
@@ -69,6 +90,7 @@ export class PartidaComponent implements OnInit {
 
 
   async ngOnInit() {
+    
 
     if(this.roomId){
       if(this.servicio.currentUser.estado == 'inGame'){
@@ -117,6 +139,7 @@ export class PartidaComponent implements OnInit {
       
     }
 
+   // this.countdown.begin();
    
   //Subscribirse a los servicios WebSocket de Movimientos , Chat y comunicaciones
     await this.servicioWS.iniciarConexionWebSocket();
@@ -127,6 +150,28 @@ export class PartidaComponent implements OnInit {
     }
   }
     
+
+  onTimerFinished(e:Event){
+    if (e["action"] == "done"){
+      this.partida.resultado = (this.servicioAjedrez.colorJugador = "black")? this.partida.jugadorBlancas.nick : this.partida.jugadorNegras.nick;
+      this.servicioAjedrez.partida.resultado = (this.servicioAjedrez.colorJugador = "black")? this.partida.jugadorBlancas.nick : this.partida.jugadorNegras.nick; 
+      this.servicioAjedrez.room.partida.resultado = (this.servicioAjedrez.colorJugador = "black")? this.partida.jugadorBlancas.nick : this.partida.jugadorNegras.nick;
+      
+      let com = new ComWS();
+      com.color = this.servicioAjedrez.colorJugador;
+      com.id = this.servicio.currentUser.id;
+      com.message = "tiempo agotado";
+      com.nick = this.servicio.currentUser.nick; 
+      this.servicioWS.sendCom(com);
+       alert("Se te acabó el tiempo. Has perdido :(");
+       this.servicioAjedrez.finalizarPartida();
+     }
+     
+   }
+
+  ngAfterViewInit(){
+   
+  }
    
   ionViewDidLoad(){
     setTimeout(() => {
@@ -135,6 +180,10 @@ export class PartidaComponent implements OnInit {
         this.servicioWS.sendCom(this.com);
       
     }, 1000);
+}
+
+ngOnDestroy(){
+  this.countdown=null;
 }
     
 

@@ -24,6 +24,7 @@
     "bootstrap": "^4.5.0",
     "jquery": "^3.5.1",
     "net": "^1.0.2",
+    "ngx-countdown": "^9.0.1",
     "rxjs": "~6.5.4",
     "sockjs-client": "^1.4.0",
     "stompjs": "^2.3.3",

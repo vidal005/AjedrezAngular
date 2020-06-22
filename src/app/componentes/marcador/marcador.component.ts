@@ -83,8 +83,8 @@ export class MarcadorComponent implements OnInit {
       
       this.servicoWS.sendCom(comTablas);
 
-      alert('Esperando respuesta de ' + (this.servicioAjedrez.jugador.id == this.servicioAjedrez.partida.jugadorBlancas.id)?
-      this.servicioAjedrez.partida.jugadorNegras.nick : this.servicioAjedrez.partida.jugadorBlancas.nick);
+      //alert("Esperando respuesta de " + (this.servicioAjedrez.jugador.id == this.servicioAjedrez.partida.jugadorBlancas.id)?
+      //this.servicioAjedrez.partida.jugadorNegras.nick : this.servicioAjedrez.partida.jugadorBlancas.nick);
 
   }
 

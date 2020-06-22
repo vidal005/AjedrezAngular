@@ -1,0 +1,22 @@
+
+<app-navbar></app-navbar>
+<br><br>
+<div class="flex-container">
+    <div>
+        <app-tablero></app-tablero>
+    </div>
+    <div >
+        <div class="parent">
+            <div class="col">
+                <div  *ngFor="let move of moves; even as isEven" class="btn-group" class="row" role="group" aria-label="Basic example">
+                    <button *ngIf="isEven" type="button" (click)="irAMovimiento(move.numero)" class="btn btn-secondary">{{move.casilla}}</button>
+                </div>
+            </div>
+            <div class="col">
+                <div  *ngFor="let move of moves; odd as isOdd" class="btn-group btn" class="row" role="group" aria-label="Basic example">
+                    <button *ngIf="isOdd" type="button" (click)="irAMovimiento(move.numero)" class="btn btn-secondary">{{move.casilla}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

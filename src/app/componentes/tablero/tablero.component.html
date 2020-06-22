@@ -1,5 +1,5 @@
-<div (window:resize)="onResize($event)" (window:click)="onClickWindow($event)" >
+<div (window:resize)="onResize($event)" (window:click)="onClickWindow($event)"  style="position: relative;">
 <img src="https://assets.chess24.com/assets/7bd769e178450cc4d968a75890b87ed0/images/chess/themes/boards/chess24/white.png"
-    style="height: 460px; width: 460;">
-<app-casilla *ngFor="let c of casillas" [casilla] = "c" ></app-casilla>
+    style="height: 575px; width: 575px;">
+<app-casilla *ngFor="let c of casillas" [casilla] = "c" style="position: absolute;" [style.top]="c.posicionY+'px'" [style.left]="c.posicionX+'px'" ></app-casilla>
 </div>

@@ -1,0 +1,22 @@
+.parent {
+    display: flex;
+    background-color: rgb(60, 110, 110);
+  }
+  
+  .col {
+    
+    background-color: rgb(60, 110, 110);
+  }
+
+  .flex-container {
+    display: flex;
+    background-color: rgb(60, 110, 110);
+    flex-direction: row;
+    justify-content: space-evenly;
+    
+  }
+  
+  .btn{
+    background-color: rgb(60, 110, 110);
+    border:darkslategray;
+  }

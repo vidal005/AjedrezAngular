@@ -8,6 +8,7 @@ import { Room } from '../modelo/room';
   providedIn: 'root'
 })
 export class RESTservicioService {
+  
 
   //por hacer
   borrarRoom(room: any) {
@@ -19,8 +20,12 @@ export class RESTservicioService {
     this.currentUser = JSON.parse(sessionStorage.getItem('usuario'));
   }
 
-  async getPartidasUsuario(usuarioId : String) {
-    return this.http.get('http://localhost:8082/ajedrez/getPartidasUsuario/'+ usuarioId).toPromise();
+  async getPartida(id: String): Promise<Partida> {
+    return this.http.get<Partida>('http://localhost:8082/ajedrez/getPartida/'+ id).toPromise<Partida>();
+  }
+
+   getPartidasUsuario(usuarioId : String): Usuario | PromiseLike<Usuario> {
+    return this.http.get<Usuario>('http://localhost:8082/ajedrez/getPartidasUsuario/'+ usuarioId).toPromise<Usuario>();
   }
 
   async actualizarPartida(partida: Partida) {

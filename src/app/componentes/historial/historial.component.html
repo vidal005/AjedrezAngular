@@ -14,12 +14,12 @@
     <tr *ngFor="let partida of partidasUsuario">
       <th scope="row">{{partida.id}}</th>
       <td>{{partida.jugadorBlancas.nick}}</td>
-      <td>{{partida.jugadorNegras.nick}}</td>
+      <td>{{partida.jugadorNegras?.nick}}</td>
       <td>
-      <div *ngIf="partida.resultado == servicioREST.currentUser.nick ; else noVictoria">Victoria</div>
+      <div *ngIf="partida.resultado == servicioREST.currentUser.nick ; else noVictoria"><a class="nav-link" [routerLink]="['/replay', partida.id]"> Victoria </a> </div>
       <ng-template #noVictoria>
-        <div *ngIf="partida.resultado == 'tablas'; else elseBlock"> Empate</div>
-        <ng-template #elseBlock> Derrota </ng-template>
+        <div *ngIf="partida.resultado == 'tablas'; else elseBlock"><a class="nav-link" [routerLink]="['/replay', partida.id]"> Empate </a> </div>
+        <ng-template #elseBlock> <a class="nav-link" [routerLink]="['/replay', partida.id]"> Derrota </a> </ng-template>
       </ng-template>
     </td>
     </tr>

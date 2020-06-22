@@ -36,17 +36,17 @@ export class TableroComponent implements OnInit {
     }
     
 
-    for (let index = 0; index < this.casillas.length; index++) {
+    /*for (let index = 0; index < this.casillas.length; index++) {
       this.casillas[index].posicionY = this.elRef.nativeElement.offsetTop + this.offSTop +  Math.floor(index / 8) * 53;
       this.casillas[index].posicionX = this.elRef.nativeElement.offsetLeft + 18 + (index % 8) * 53;
-    }
+    }*/
   }
 
   public onClickWindow(ev){
-    for (let index = 0; index < this.casillas.length; index++) {
+   /* for (let index = 0; index < this.casillas.length; index++) {
       this.casillas[index].posicionY = this.elRef.nativeElement.offsetTop + this.offSTop +  Math.floor(index / 8) * 53;
       this.casillas[index].posicionX = this.elRef.nativeElement.offsetLeft + 18 + (index % 8) * 53;
-    }
+    }*/
   }
 
   ngOnInit(): void {
@@ -56,13 +56,24 @@ export class TableroComponent implements OnInit {
     if(isIEOrEdge){
        this.offSTop = 18 + 15;
     }
+
+    /*for (let index = 0; index < this.casillas.length; index++) {
+      //this.casillas[index].posicionY = this.elRef.nativeElement.offsetTop + this.offSTop +  Math.floor(index / 8) * 53;
+      this.casillas[index].posicionX = this.elRef.nativeElement.offsetLeft + 18 + (index % 8) * 53;
+    }*/
+   
+  }
+
+  ngAfterViewInit(){
+    /*const isIEOrEdge = /msie\s|trident\/|edge\/|firefox\//i.test(window.navigator.userAgent)
+
+    if(isIEOrEdge){
+       this.offSTop = 18 + 15;
+    }
+
     for (let index = 0; index < this.casillas.length; index++) {
       this.casillas[index].posicionY = this.elRef.nativeElement.offsetTop + this.offSTop +  Math.floor(index / 8) * 53;
       this.casillas[index].posicionX = this.elRef.nativeElement.offsetLeft + 18 + (index % 8) * 53;
-      this.casillas[index].posicion = index;
-      if(this.casillas[index].pieza != null){
-        this.casillas[index].pieza.id += index;
-      }
-    }
+    }*/
   }
 }

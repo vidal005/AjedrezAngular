@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
                    this.router.navigate(['/home']);
                    this.loginIncorrecto = false;
                    this.service.currentUser = data;
+                   //this.service.currentUser.estado = "online";
                    sessionStorage.setItem('usuario',JSON.stringify(data));
                },
                error => {   

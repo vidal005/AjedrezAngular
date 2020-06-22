@@ -5,16 +5,20 @@
     <div>
         <app-tablero></app-tablero>
     </div>
-    <div >
+    <div class="chat" >
         <app-chat ></app-chat>
     </div>
 </div>
-<div class="m-4 row justify-content-start">
+<div class="m-4 row justify-content-start marcador-countdown">
     <app-marcador class="col-6" 
         [partida] = "servicioAjedrez.partida"
         [colorJugador] = "servicioAjedrez.colorJugador"
         >
         
     </app-marcador>
+    <div class="col-6 container-timer">
+    <countdown #cd  class="timer" [config]="{ leftTime: 600, format: 'm:ss' , demand: true}"  (event)="onTimerFinished($event)" ></countdown>
 </div>
+</div>
+
 

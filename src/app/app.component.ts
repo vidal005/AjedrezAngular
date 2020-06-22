@@ -12,7 +12,7 @@ import { RESTservicioService } from './servicio/restservicio.service';
 export class AppComponent {
   
   private serverUrl = 'http://localhost:8088/socket'
-  private title = 'WebSockets chat';
+  public title = 'WebSockets chat';
   private stompClient;
 
   constructor(){
