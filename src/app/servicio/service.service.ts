@@ -1398,6 +1398,8 @@ finalizarPartida(){
       piezaComida =  (this.casillas[posicion].pieza)?JSON.parse(JSON.stringify(this.casillas[posicion].pieza)): null;
       this.casillas[posicion].pieza = pieza;
       casilla.pieza = null;
+      reyWhite = this.casillas.find(c => c.pieza != null && c.pieza.id.substr(0, 1) == "k" && c.pieza.color == "white");
+      reyBlack = this.casillas.find(c => c.pieza != null && c.pieza.id.substr(0, 1) == "k" && c.pieza.color == "black");
       if (this.casillas[posicion].pieza.color == "white" ) {
         this.actualizarAmenazadasBlack();
         if (this.amenazadasBlack.has(reyWhite)) {
