@@ -78,8 +78,9 @@ export class CasillaComponent implements OnInit {
       && this.servicio.casillas[posicionFinal] != this.servicio.casillas[posicionInicial]){
       movimientos = this.servicio.getPosiblesPosiciones(ev.dataTransfer.getData("posicion"));
 
+      let move = movimientos.find(posicionFinal);
       //si es un posible movimiento y no es la misma casilla
-      if(posicionFinal ){
+      if(move ){
         this.servicio.casillas[posicionFinal].pieza = this.servicio.casillas[posicionInicial].pieza;
         this.servicio.casillas[posicionInicial].pieza = null;
         if((this.servicio.getXY(posicionFinal)[0] == 0 || this.servicio.getXY(posicionFinal)[0] == 7) 
